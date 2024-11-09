@@ -16,15 +16,25 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const StudentLazyImport = createFileRoute('/student')()
 const RegisterLazyImport = createFileRoute('/register')()
 const ProfileLazyImport = createFileRoute('/profile')()
 const LoginLazyImport = createFileRoute('/login')()
 const IndexLazyImport = createFileRoute('/')()
 const StudentsCreateLazyImport = createFileRoute('/students/create')()
 const StudentsIdLazyImport = createFileRoute('/students/$id')()
+const ManufactureRefreshLazyImport = createFileRoute('/manufacture/refresh')()
+const ManufactureCreateLazyImport = createFileRoute('/manufacture/create')()
 const StudentsEditIdLazyImport = createFileRoute('/students/edit/$id')()
+const ManufactureEditIdLazyImport = createFileRoute('/manufacture/edit/$id')()
 
 // Create/Update Routes
+
+const StudentLazyRoute = StudentLazyImport.update({
+  id: '/student',
+  path: '/student',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/student.lazy').then((d) => d.Route))
 
 const RegisterLazyRoute = RegisterLazyImport.update({
   id: '/register',
@@ -64,12 +74,36 @@ const StudentsIdLazyRoute = StudentsIdLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/students/$id.lazy').then((d) => d.Route))
 
+const ManufactureRefreshLazyRoute = ManufactureRefreshLazyImport.update({
+  id: '/manufacture/refresh',
+  path: '/manufacture/refresh',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/manufacture/refresh.lazy').then((d) => d.Route),
+)
+
+const ManufactureCreateLazyRoute = ManufactureCreateLazyImport.update({
+  id: '/manufacture/create',
+  path: '/manufacture/create',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/manufacture/create.lazy').then((d) => d.Route),
+)
+
 const StudentsEditIdLazyRoute = StudentsEditIdLazyImport.update({
   id: '/students/edit/$id',
   path: '/students/edit/$id',
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
   import('./routes/students/edit/$id.lazy').then((d) => d.Route),
+)
+
+const ManufactureEditIdLazyRoute = ManufactureEditIdLazyImport.update({
+  id: '/manufacture/edit/$id',
+  path: '/manufacture/edit/$id',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/manufacture/edit/$id.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -104,6 +138,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterLazyImport
       parentRoute: typeof rootRoute
     }
+    '/student': {
+      id: '/student'
+      path: '/student'
+      fullPath: '/student'
+      preLoaderRoute: typeof StudentLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/manufacture/create': {
+      id: '/manufacture/create'
+      path: '/manufacture/create'
+      fullPath: '/manufacture/create'
+      preLoaderRoute: typeof ManufactureCreateLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/manufacture/refresh': {
+      id: '/manufacture/refresh'
+      path: '/manufacture/refresh'
+      fullPath: '/manufacture/refresh'
+      preLoaderRoute: typeof ManufactureRefreshLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/students/$id': {
       id: '/students/$id'
       path: '/students/$id'
@@ -116,6 +171,13 @@ declare module '@tanstack/react-router' {
       path: '/students/create'
       fullPath: '/students/create'
       preLoaderRoute: typeof StudentsCreateLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/manufacture/edit/$id': {
+      id: '/manufacture/edit/$id'
+      path: '/manufacture/edit/$id'
+      fullPath: '/manufacture/edit/$id'
+      preLoaderRoute: typeof ManufactureEditIdLazyImport
       parentRoute: typeof rootRoute
     }
     '/students/edit/$id': {
@@ -135,8 +197,12 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/student': typeof StudentLazyRoute
+  '/manufacture/create': typeof ManufactureCreateLazyRoute
+  '/manufacture/refresh': typeof ManufactureRefreshLazyRoute
   '/students/$id': typeof StudentsIdLazyRoute
   '/students/create': typeof StudentsCreateLazyRoute
+  '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
   '/students/edit/$id': typeof StudentsEditIdLazyRoute
 }
 
@@ -145,8 +211,12 @@ export interface FileRoutesByTo {
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/student': typeof StudentLazyRoute
+  '/manufacture/create': typeof ManufactureCreateLazyRoute
+  '/manufacture/refresh': typeof ManufactureRefreshLazyRoute
   '/students/$id': typeof StudentsIdLazyRoute
   '/students/create': typeof StudentsCreateLazyRoute
+  '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
   '/students/edit/$id': typeof StudentsEditIdLazyRoute
 }
 
@@ -156,8 +226,12 @@ export interface FileRoutesById {
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/student': typeof StudentLazyRoute
+  '/manufacture/create': typeof ManufactureCreateLazyRoute
+  '/manufacture/refresh': typeof ManufactureRefreshLazyRoute
   '/students/$id': typeof StudentsIdLazyRoute
   '/students/create': typeof StudentsCreateLazyRoute
+  '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
   '/students/edit/$id': typeof StudentsEditIdLazyRoute
 }
 
@@ -168,8 +242,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/student'
+    | '/manufacture/create'
+    | '/manufacture/refresh'
     | '/students/$id'
     | '/students/create'
+    | '/manufacture/edit/$id'
     | '/students/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -177,8 +255,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/student'
+    | '/manufacture/create'
+    | '/manufacture/refresh'
     | '/students/$id'
     | '/students/create'
+    | '/manufacture/edit/$id'
     | '/students/edit/$id'
   id:
     | '__root__'
@@ -186,8 +268,12 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile'
     | '/register'
+    | '/student'
+    | '/manufacture/create'
+    | '/manufacture/refresh'
     | '/students/$id'
     | '/students/create'
+    | '/manufacture/edit/$id'
     | '/students/edit/$id'
   fileRoutesById: FileRoutesById
 }
@@ -197,8 +283,12 @@ export interface RootRouteChildren {
   LoginLazyRoute: typeof LoginLazyRoute
   ProfileLazyRoute: typeof ProfileLazyRoute
   RegisterLazyRoute: typeof RegisterLazyRoute
+  StudentLazyRoute: typeof StudentLazyRoute
+  ManufactureCreateLazyRoute: typeof ManufactureCreateLazyRoute
+  ManufactureRefreshLazyRoute: typeof ManufactureRefreshLazyRoute
   StudentsIdLazyRoute: typeof StudentsIdLazyRoute
   StudentsCreateLazyRoute: typeof StudentsCreateLazyRoute
+  ManufactureEditIdLazyRoute: typeof ManufactureEditIdLazyRoute
   StudentsEditIdLazyRoute: typeof StudentsEditIdLazyRoute
 }
 
@@ -207,8 +297,12 @@ const rootRouteChildren: RootRouteChildren = {
   LoginLazyRoute: LoginLazyRoute,
   ProfileLazyRoute: ProfileLazyRoute,
   RegisterLazyRoute: RegisterLazyRoute,
+  StudentLazyRoute: StudentLazyRoute,
+  ManufactureCreateLazyRoute: ManufactureCreateLazyRoute,
+  ManufactureRefreshLazyRoute: ManufactureRefreshLazyRoute,
   StudentsIdLazyRoute: StudentsIdLazyRoute,
   StudentsCreateLazyRoute: StudentsCreateLazyRoute,
+  ManufactureEditIdLazyRoute: ManufactureEditIdLazyRoute,
   StudentsEditIdLazyRoute: StudentsEditIdLazyRoute,
 }
 
@@ -228,8 +322,12 @@ export const routeTree = rootRoute
         "/login",
         "/profile",
         "/register",
+        "/student",
+        "/manufacture/create",
+        "/manufacture/refresh",
         "/students/$id",
         "/students/create",
+        "/manufacture/edit/$id",
         "/students/edit/$id"
       ]
     },
@@ -245,11 +343,23 @@ export const routeTree = rootRoute
     "/register": {
       "filePath": "register.lazy.jsx"
     },
+    "/student": {
+      "filePath": "student.lazy.jsx"
+    },
+    "/manufacture/create": {
+      "filePath": "manufacture/create.lazy.jsx"
+    },
+    "/manufacture/refresh": {
+      "filePath": "manufacture/refresh.lazy.jsx"
+    },
     "/students/$id": {
       "filePath": "students/$id.lazy.jsx"
     },
     "/students/create": {
       "filePath": "students/create.lazy.jsx"
+    },
+    "/manufacture/edit/$id": {
+      "filePath": "manufacture/edit/$id.lazy.jsx"
     },
     "/students/edit/$id": {
       "filePath": "students/edit/$id.lazy.jsx"

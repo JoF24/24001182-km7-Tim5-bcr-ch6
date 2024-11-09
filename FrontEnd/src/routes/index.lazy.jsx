@@ -1,72 +1,77 @@
-import { createLazyFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import { getStudents } from "../service/student";
-import StudentItem from "../components/Student/StudentItem";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import Row from 'react-bootstrap/Row'
+import Button from 'react-bootstrap/Button'
+import { getManufacture } from '../service/Manufacture'
+import ManufactureItem from '../components/Manufacture/ManufactureItem'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
-export const Route = createLazyFileRoute("/")({
-    component: Index,
-});
+export const Route = createLazyFileRoute('/')({
+  component: Index,
+})
 
 function Index() {
-    const { token } = useSelector((state) => state.auth);
+  const { token,user } = useSelector((state) => state.auth);
 
-    const [students, setStudents] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const [manufacture, setManufacture] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(() => {
-        const getStudentData = async () => {
-            setIsLoading(true);
-            const result = await getStudents();
-            if (result.success) {
-                setStudents(result.data);
-            }
-            setIsLoading(false);
-        };
+  useEffect(() => {
+    const getManufactureData = async () => {
+      setIsLoading(true)
+      const result = await getManufacture()
+      if (result.success) {
+        setManufacture(result.data)
+      }
+      setIsLoading(false)
+    }
 
-        if (token) {
-            getStudentData();
-        }
-    }, [token]);
+    if (token) {
+      getManufactureData()
+    }
+  }, [token])
 
-    useEffect(() => {
-        const successMessage = sessionStorage.getItem("successMessage");
-        if (successMessage) {
-            toast.success(successMessage);
+  useEffect(() => {
+    const successMessage = sessionStorage.getItem('successMessage')
+    if (successMessage) {
+      toast.success(successMessage)
 
-            sessionStorage.removeItem("successMessage");
-        }
-    }, []);
+      sessionStorage.removeItem('successMessage')
+    }
+  }, [])
 
-    return (
-        <>
-        <ToastContainer />
-        <Row className="mt-4">
+  return (
+    <>
+      <ToastContainer />
+      <Row className="mt-4">
+        {user?.role_id === 1 && (
+          <>
             <div className="d-flex justify-content-end mb-3">
-                <Button as={Link} to="/students/create" variant="primary" size="md">
-                    + Tambah Data
-                </Button>
+              <Button as={Link} to="/manufacture/create" variant="primary" size="md">
+                + Tambah Data
+              </Button>
             </div>
-            {!token && (
-                <Col>
-                    <h1 className="text-center">
-                        Please login first to get student data!
-                    </h1>
-                </Col>
-            )}
+          </>                                        
+        )}
+        
+        {!token && (
+          navigate({ to: "/login" })
+        )}
 
-            {isLoading ? (<h1>Loading....</h1>) 
-            : students.length === 0 ? (<h1>Student data is not found !</h1>) 
-            : (students.length > 0 &&
-                students.map((student) => (
-                    <StudentItem student={student} key={student?.id} />
-                )))}
-        </Row>
-        </>
-    );
+        {isLoading ? (
+          <h1>Loading....</h1>
+        ) : manufacture.length === 0 ? (
+          <h1>Manufacture data is not found !</h1>
+        ) : (
+          manufacture.length > 0 &&
+          manufacture.map((manufacture) => (
+            <ManufactureItem manufacture={manufacture} key={manufacture?.id} />
+          ))
+        )}
+      </Row>
+    </>
+  )
 }

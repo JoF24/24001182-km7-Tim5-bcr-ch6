@@ -33,7 +33,7 @@ const TwoToneSidebar = ({ isOpen, toggleSidebar }) => {
               Fuel
             </Nav.Link>
             <Nav.Link as={Link} to="/about" className="sidebar-link-right">
-              Mufacture
+              Manufacture
             </Nav.Link>
             <Nav.Link as={Link} to="/about" className="sidebar-link-right">
               Model
