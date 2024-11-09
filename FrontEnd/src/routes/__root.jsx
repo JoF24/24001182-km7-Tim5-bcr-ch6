@@ -6,25 +6,29 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import NavigationBar from "../components/Navbar";
 import TwoToneSidebar from "../components/SideBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../components/Navbar/NavigationBar.css";
 
-const isUserLoggedIn = () => {
-    return !!localStorage.getItem("authToken");
+const checkUserLoggedIn = () => {
+    return !!localStorage.getItem("Token");
 };
 
 export const Route = createRootRoute({
     component: function RootComponent() {
         const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+        const [isLoggedIn, setIsLoggedIn] = useState(checkUserLoggedIn);
+
         const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-        // untuk cek apakah pengguna sudah login
-        const isLoggedIn = isUserLoggedIn();
+        useEffect(() => {
+            const authToken = localStorage.getItem("token");
+            setIsLoggedIn(!!authToken);
+        }, []);
 
         return (
             <>
                 <div className={`app-container ${isSidebarOpen ? "sidebar-open" : ""}`}>
-                    {isLoggedIn && (
+                    {isLoggedIn ? (
                         <>
                             <TwoToneSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
                             <div className="main-content">
@@ -35,9 +39,7 @@ export const Route = createRootRoute({
                                 <TanStackRouterDevtools />
                             </div>
                         </>
-                    )}
-                    {!isLoggedIn && (
-                        // tampilkan konten login atau register tanpa sidebar dan navbar
+                    ) : (
                         <Container>
                             <Outlet />
                         </Container>
