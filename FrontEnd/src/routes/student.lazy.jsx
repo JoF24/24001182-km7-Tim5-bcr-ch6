@@ -4,33 +4,33 @@ import { useSelector } from 'react-redux'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
-import { getFuels } from '../service/fuel' // Update the import
-import FuelItem from '../components/Fuel/FuelItem' // Update to FuelItem component
+import { getStudents } from '../service/student'
+import StudentItem from '../components/Student/StudentItem'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-export const Route = createLazyFileRoute('/fuels')({
+export const Route = createLazyFileRoute('/student')({
   component: Index,
 })
 
 function Index() {
-  const { token,user } = useSelector((state) => state.auth)
+  const { token } = useSelector((state) => state.auth)
 
-  const [fuels, setFuels] = useState([])
+  const [students, setStudents] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    const getFuelData = async () => {
+    const getStudentData = async () => {
       setIsLoading(true)
-      const result = await getFuels()
+      const result = await getStudents()
       if (result.success) {
-        setFuels(result.data)
+        setStudents(result.data)
       }
       setIsLoading(false)
     }
 
     if (token) {
-      getFuelData()
+      getStudentData()
     }
   }, [token])
 
@@ -47,31 +47,30 @@ function Index() {
     <>
       <ToastContainer />
       <Row className="mt-4">
-        {user?.role_id === 1 && (
-          <>
-            <div className="d-flex justify-content-end mb-3">
-              <Button as={Link} to="/fuels/create" variant="primary" size="md">
-                + Tambah Data
-              </Button>
-            </div>
-          </>                                        
-        )}
-        
+        <div className="d-flex justify-content-end mb-3">
+          <Button as={Link} to="/students/create" variant="primary" size="md">
+            + Tambah Data
+          </Button>
+        </div>
         {!token && (
-          navigate({ to: "/login" })
+          <Col>
+            <h1 className="text-center">
+              Please login first to get student data!
+            </h1>
+          </Col>
         )}
 
         {isLoading ? (
           <h1>Loading....</h1>
-        ) : fuels.length === 0 ? (
-          <h1>Fuel data is not found!</h1>
+        ) : students.length === 0 ? (
+          <h1>Student data is not found !</h1>
         ) : (
-          fuels.length > 0 &&
-          fuels.map((fuel) => <FuelItem fuel={fuel} key={fuel?.id} />)
+          students.length > 0 &&
+          students.map((student) => (
+            <StudentItem student={student} key={student?.id} />
+          ))
         )}
       </Row>
     </>
   )
 }
-
-export default Index
