@@ -34,7 +34,7 @@ exports.comparePassword = async (inputpassword, dbpassword) =>{
 }
 
 exports.getUserById = async (id) => {
-    const user = await prisma.users.findFirst({
+    const user = await prisma.users.findUnique({
         where: {
             id,
         },
