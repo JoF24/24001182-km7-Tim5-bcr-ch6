@@ -14,7 +14,7 @@ export const Route = createLazyFileRoute('/fuels')({
 })
 
 function Index() {
-  const { token } = useSelector((state) => state.auth)
+  const { token,user } = useSelector((state) => state.auth)
 
   const [fuels, setFuels] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -47,17 +47,18 @@ function Index() {
     <>
       <ToastContainer />
       <Row className="mt-4">
-        <div className="d-flex justify-content-end mb-3">
-          <Button as={Link} to="/fuels/create" variant="primary" size="md">
-            + Tambah Data
-          </Button>
-        </div>
+        {user?.role_id === 1 && (
+          <>
+            <div className="d-flex justify-content-end mb-3">
+              <Button as={Link} to="/fuels/create" variant="primary" size="md">
+                + Tambah Data
+              </Button>
+            </div>
+          </>                                        
+        )}
+        
         {!token && (
-          <Col>
-            <h1 className="text-center">
-              Please login first to get fuel data!
-            </h1>
-          </Col>
+          navigate({ to: "/login" })
         )}
 
         {isLoading ? (
