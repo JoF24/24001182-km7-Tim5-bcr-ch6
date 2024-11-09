@@ -16,15 +16,29 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const TransmissionsLazyImport = createFileRoute('/transmissions')()
 const RegisterLazyImport = createFileRoute('/register')()
 const ProfileLazyImport = createFileRoute('/profile')()
 const LoginLazyImport = createFileRoute('/login')()
+const FuelsLazyImport = createFileRoute('/fuels')()
 const IndexLazyImport = createFileRoute('/')()
+const TransmissionsCreateLazyImport = createFileRoute('/transmissions/create')()
 const StudentsCreateLazyImport = createFileRoute('/students/create')()
 const StudentsIdLazyImport = createFileRoute('/students/$id')()
+const FuelsCreateLazyImport = createFileRoute('/fuels/create')()
+const TransmissionsEditIdLazyImport = createFileRoute(
+  '/transmissions/edit/$id',
+)()
 const StudentsEditIdLazyImport = createFileRoute('/students/edit/$id')()
+const FuelsEditIdLazyImport = createFileRoute('/fuels/edit/$id')()
 
 // Create/Update Routes
+
+const TransmissionsLazyRoute = TransmissionsLazyImport.update({
+  id: '/transmissions',
+  path: '/transmissions',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/transmissions.lazy').then((d) => d.Route))
 
 const RegisterLazyRoute = RegisterLazyImport.update({
   id: '/register',
@@ -44,11 +58,25 @@ const LoginLazyRoute = LoginLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
+const FuelsLazyRoute = FuelsLazyImport.update({
+  id: '/fuels',
+  path: '/fuels',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/fuels.lazy').then((d) => d.Route))
+
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const TransmissionsCreateLazyRoute = TransmissionsCreateLazyImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => TransmissionsLazyRoute,
+} as any).lazy(() =>
+  import('./routes/transmissions/create.lazy').then((d) => d.Route),
+)
 
 const StudentsCreateLazyRoute = StudentsCreateLazyImport.update({
   id: '/students/create',
@@ -64,12 +92,34 @@ const StudentsIdLazyRoute = StudentsIdLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/students/$id.lazy').then((d) => d.Route))
 
+const FuelsCreateLazyRoute = FuelsCreateLazyImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => FuelsLazyRoute,
+} as any).lazy(() => import('./routes/fuels/create.lazy').then((d) => d.Route))
+
+const TransmissionsEditIdLazyRoute = TransmissionsEditIdLazyImport.update({
+  id: '/edit/$id',
+  path: '/edit/$id',
+  getParentRoute: () => TransmissionsLazyRoute,
+} as any).lazy(() =>
+  import('./routes/transmissions/edit/$id.lazy').then((d) => d.Route),
+)
+
 const StudentsEditIdLazyRoute = StudentsEditIdLazyImport.update({
   id: '/students/edit/$id',
   path: '/students/edit/$id',
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
   import('./routes/students/edit/$id.lazy').then((d) => d.Route),
+)
+
+const FuelsEditIdLazyRoute = FuelsEditIdLazyImport.update({
+  id: '/edit/$id',
+  path: '/edit/$id',
+  getParentRoute: () => FuelsLazyRoute,
+} as any).lazy(() =>
+  import('./routes/fuels/edit/$id.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -81,6 +131,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/fuels': {
+      id: '/fuels'
+      path: '/fuels'
+      fullPath: '/fuels'
+      preLoaderRoute: typeof FuelsLazyImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -104,6 +161,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterLazyImport
       parentRoute: typeof rootRoute
     }
+    '/transmissions': {
+      id: '/transmissions'
+      path: '/transmissions'
+      fullPath: '/transmissions'
+      preLoaderRoute: typeof TransmissionsLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/fuels/create': {
+      id: '/fuels/create'
+      path: '/create'
+      fullPath: '/fuels/create'
+      preLoaderRoute: typeof FuelsCreateLazyImport
+      parentRoute: typeof FuelsLazyImport
+    }
     '/students/$id': {
       id: '/students/$id'
       path: '/students/$id'
@@ -118,6 +189,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudentsCreateLazyImport
       parentRoute: typeof rootRoute
     }
+    '/transmissions/create': {
+      id: '/transmissions/create'
+      path: '/create'
+      fullPath: '/transmissions/create'
+      preLoaderRoute: typeof TransmissionsCreateLazyImport
+      parentRoute: typeof TransmissionsLazyImport
+    }
+    '/fuels/edit/$id': {
+      id: '/fuels/edit/$id'
+      path: '/edit/$id'
+      fullPath: '/fuels/edit/$id'
+      preLoaderRoute: typeof FuelsEditIdLazyImport
+      parentRoute: typeof FuelsLazyImport
+    }
     '/students/edit/$id': {
       id: '/students/edit/$id'
       path: '/students/edit/$id'
@@ -125,78 +210,150 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudentsEditIdLazyImport
       parentRoute: typeof rootRoute
     }
+    '/transmissions/edit/$id': {
+      id: '/transmissions/edit/$id'
+      path: '/edit/$id'
+      fullPath: '/transmissions/edit/$id'
+      preLoaderRoute: typeof TransmissionsEditIdLazyImport
+      parentRoute: typeof TransmissionsLazyImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface FuelsLazyRouteChildren {
+  FuelsCreateLazyRoute: typeof FuelsCreateLazyRoute
+  FuelsEditIdLazyRoute: typeof FuelsEditIdLazyRoute
+}
+
+const FuelsLazyRouteChildren: FuelsLazyRouteChildren = {
+  FuelsCreateLazyRoute: FuelsCreateLazyRoute,
+  FuelsEditIdLazyRoute: FuelsEditIdLazyRoute,
+}
+
+const FuelsLazyRouteWithChildren = FuelsLazyRoute._addFileChildren(
+  FuelsLazyRouteChildren,
+)
+
+interface TransmissionsLazyRouteChildren {
+  TransmissionsCreateLazyRoute: typeof TransmissionsCreateLazyRoute
+  TransmissionsEditIdLazyRoute: typeof TransmissionsEditIdLazyRoute
+}
+
+const TransmissionsLazyRouteChildren: TransmissionsLazyRouteChildren = {
+  TransmissionsCreateLazyRoute: TransmissionsCreateLazyRoute,
+  TransmissionsEditIdLazyRoute: TransmissionsEditIdLazyRoute,
+}
+
+const TransmissionsLazyRouteWithChildren =
+  TransmissionsLazyRoute._addFileChildren(TransmissionsLazyRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/fuels': typeof FuelsLazyRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/transmissions': typeof TransmissionsLazyRouteWithChildren
+  '/fuels/create': typeof FuelsCreateLazyRoute
   '/students/$id': typeof StudentsIdLazyRoute
   '/students/create': typeof StudentsCreateLazyRoute
+  '/transmissions/create': typeof TransmissionsCreateLazyRoute
+  '/fuels/edit/$id': typeof FuelsEditIdLazyRoute
   '/students/edit/$id': typeof StudentsEditIdLazyRoute
+  '/transmissions/edit/$id': typeof TransmissionsEditIdLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/fuels': typeof FuelsLazyRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/transmissions': typeof TransmissionsLazyRouteWithChildren
+  '/fuels/create': typeof FuelsCreateLazyRoute
   '/students/$id': typeof StudentsIdLazyRoute
   '/students/create': typeof StudentsCreateLazyRoute
+  '/transmissions/create': typeof TransmissionsCreateLazyRoute
+  '/fuels/edit/$id': typeof FuelsEditIdLazyRoute
   '/students/edit/$id': typeof StudentsEditIdLazyRoute
+  '/transmissions/edit/$id': typeof TransmissionsEditIdLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/fuels': typeof FuelsLazyRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
+  '/transmissions': typeof TransmissionsLazyRouteWithChildren
+  '/fuels/create': typeof FuelsCreateLazyRoute
   '/students/$id': typeof StudentsIdLazyRoute
   '/students/create': typeof StudentsCreateLazyRoute
+  '/transmissions/create': typeof TransmissionsCreateLazyRoute
+  '/fuels/edit/$id': typeof FuelsEditIdLazyRoute
   '/students/edit/$id': typeof StudentsEditIdLazyRoute
+  '/transmissions/edit/$id': typeof TransmissionsEditIdLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/fuels'
     | '/login'
     | '/profile'
     | '/register'
+    | '/transmissions'
+    | '/fuels/create'
     | '/students/$id'
     | '/students/create'
+    | '/transmissions/create'
+    | '/fuels/edit/$id'
     | '/students/edit/$id'
+    | '/transmissions/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/fuels'
     | '/login'
     | '/profile'
     | '/register'
+    | '/transmissions'
+    | '/fuels/create'
     | '/students/$id'
     | '/students/create'
+    | '/transmissions/create'
+    | '/fuels/edit/$id'
     | '/students/edit/$id'
+    | '/transmissions/edit/$id'
   id:
     | '__root__'
     | '/'
+    | '/fuels'
     | '/login'
     | '/profile'
     | '/register'
+    | '/transmissions'
+    | '/fuels/create'
     | '/students/$id'
     | '/students/create'
+    | '/transmissions/create'
+    | '/fuels/edit/$id'
     | '/students/edit/$id'
+    | '/transmissions/edit/$id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  FuelsLazyRoute: typeof FuelsLazyRouteWithChildren
   LoginLazyRoute: typeof LoginLazyRoute
   ProfileLazyRoute: typeof ProfileLazyRoute
   RegisterLazyRoute: typeof RegisterLazyRoute
+  TransmissionsLazyRoute: typeof TransmissionsLazyRouteWithChildren
   StudentsIdLazyRoute: typeof StudentsIdLazyRoute
   StudentsCreateLazyRoute: typeof StudentsCreateLazyRoute
   StudentsEditIdLazyRoute: typeof StudentsEditIdLazyRoute
@@ -204,9 +361,11 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  FuelsLazyRoute: FuelsLazyRouteWithChildren,
   LoginLazyRoute: LoginLazyRoute,
   ProfileLazyRoute: ProfileLazyRoute,
   RegisterLazyRoute: RegisterLazyRoute,
+  TransmissionsLazyRoute: TransmissionsLazyRouteWithChildren,
   StudentsIdLazyRoute: StudentsIdLazyRoute,
   StudentsCreateLazyRoute: StudentsCreateLazyRoute,
   StudentsEditIdLazyRoute: StudentsEditIdLazyRoute,
@@ -225,9 +384,11 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/",
+        "/fuels",
         "/login",
         "/profile",
         "/register",
+        "/transmissions",
         "/students/$id",
         "/students/create",
         "/students/edit/$id"
@@ -235,6 +396,13 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.jsx"
+    },
+    "/fuels": {
+      "filePath": "fuels.lazy.jsx",
+      "children": [
+        "/fuels/create",
+        "/fuels/edit/$id"
+      ]
     },
     "/login": {
       "filePath": "login.lazy.jsx"
@@ -245,14 +413,37 @@ export const routeTree = rootRoute
     "/register": {
       "filePath": "register.lazy.jsx"
     },
+    "/transmissions": {
+      "filePath": "transmissions.lazy.jsx",
+      "children": [
+        "/transmissions/create",
+        "/transmissions/edit/$id"
+      ]
+    },
+    "/fuels/create": {
+      "filePath": "fuels/create.lazy.jsx",
+      "parent": "/fuels"
+    },
     "/students/$id": {
       "filePath": "students/$id.lazy.jsx"
     },
     "/students/create": {
       "filePath": "students/create.lazy.jsx"
     },
+    "/transmissions/create": {
+      "filePath": "transmissions/create.lazy.jsx",
+      "parent": "/transmissions"
+    },
+    "/fuels/edit/$id": {
+      "filePath": "fuels/edit/$id.lazy.jsx",
+      "parent": "/fuels"
+    },
     "/students/edit/$id": {
       "filePath": "students/edit/$id.lazy.jsx"
+    },
+    "/transmissions/edit/$id": {
+      "filePath": "transmissions/edit/$id.lazy.jsx",
+      "parent": "/transmissions"
     }
   }
 }

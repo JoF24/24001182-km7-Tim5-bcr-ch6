@@ -1,12 +1,10 @@
-export const getStudents = async (nickName) => {
+export const getTransmissions = async (type) => {
     const token = localStorage.getItem("token");
-    let params;
-    if (nickName) {
-        params.nick_name = nickName;
+    let params = {};
+    if (type) {
+        params.type = type;
     }
-    let url =
-        `${import.meta.env.VITE_API_URL}/students` +
-        new URLSearchParams(params);
+    let url = `${import.meta.env.VITE_API_URL}/carsTransmission?` + new URLSearchParams(params);
 
     const response = await fetch(url, {
         headers: {
@@ -15,15 +13,13 @@ export const getStudents = async (nickName) => {
         method: "GET",
     });
 
-    // get data
     const result = await response.json();
     return result;
 };
 
-export const getDetailStudent = async (id) => {
+export const getDetailTransmission = async (id) => {
     const token = localStorage.getItem("token");
-
-    let url = `${import.meta.env.VITE_API_URL}/students/${id}`;
+    let url = `${import.meta.env.VITE_API_URL}/carsTransmission/${id}`;
 
     const response = await fetch(url, {
         headers: {
@@ -36,19 +32,14 @@ export const getDetailStudent = async (id) => {
     return result;
 };
 
-export const createStudent = async (request) => {
+export const createTransmission = async (request) => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
-    formData.append("name", request.name);
-    formData.append("nick_name", request.nickName);
-    formData.append("class_id", request.classId);
-    formData.append("university_id", request.universityId);
-    if (request.profilePicture) {
-        formData.append("profile_picture", request.profilePicture);
-    }
+    formData.append("type", request.type);
+    formData.append("number_of_gears", request.number_of_gears);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/students`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/carsTransmission`, {
         headers: {
             authorization: `Bearer ${token}`,
         },
@@ -60,19 +51,14 @@ export const createStudent = async (request) => {
     return result;
 };
 
-export const updateStudent = async (id, request) => {
+export const updateTransmission = async (id, request) => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
-    formData.append("name", request.name);
-    formData.append("nick_name", request.nickName);
-    formData.append("class_id", request.classId);
-    formData.append("university_id", request.universityId);
-    if (request.profilePicture) {
-        formData.append("profile_picture", request.profilePicture);
-    }
+    formData.append("type", request.type);
+    formData.append("number_of_gears", request.number_of_gears);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/students/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/carsTransmission/${id}`, {
         headers: {
             authorization: `Bearer ${token}`,
         },
@@ -84,10 +70,9 @@ export const updateStudent = async (id, request) => {
     return result;
 };
 
-export const deleteStudent = async (id) => {
+export const deleteTransmission = async (id) => {
     const token = localStorage.getItem("token");
-
-    let url = `${import.meta.env.VITE_API_URL}/students/${id}`;
+    let url = `${import.meta.env.VITE_API_URL}/carsTransmission/${id}`;
 
     const response = await fetch(url, {
         headers: {
