@@ -32,8 +32,10 @@ const TransmissionItem = ({ transmission }) => {
                     onClick: async () => {
                         const result = await deleteTransmission(transmission.id);
                         if (result?.success) {
-                            toast.success("Data Transmission berhasil dihapus.");
-                            navigate({ to: "transmission/refresh"});
+                            navigate({ 
+                                to: "/transmission/refresh",
+                                state: { successMessage: "Data Transmission berhasil dihapus." }
+                            });
                         }
                         toast.error(result?.message);
                     },
