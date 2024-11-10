@@ -35,13 +35,12 @@ const TypesEditIdLazyImport = createFileRoute('/types/edit/$id')()
 const TransmissionEditIdLazyImport = createFileRoute('/transmission/edit/$id')()
 const TransmissionRefreshLazyImport = createFileRoute('/transmission/refresh')()
 const TransmissionCreateLazyImport = createFileRoute('/transmission/create')()
-const StudentsCreateLazyImport = createFileRoute('/students/create')()
-const StudentsIdLazyImport = createFileRoute('/students/$id')()
 const ManufactureRefreshLazyImport = createFileRoute('/manufacture/refresh')()
 const ManufactureCreateLazyImport = createFileRoute('/manufacture/create')()
+const FuelsCreateLazyImport = createFileRoute('/fuels/create')()
 const FuelCreateLazyImport = createFileRoute('/fuel/create')()
+const TypesEditIdLazyImport = createFileRoute('/types/edit/$id')()
 const TransmissionEditIdLazyImport = createFileRoute('/transmission/edit/$id')()
-const StudentsEditIdLazyImport = createFileRoute('/students/edit/$id')()
 const ManufactureEditIdLazyImport = createFileRoute('/manufacture/edit/$id')()
 const FuelEditIdLazyImport = createFileRoute('/fuel/edit/$id')()
 
@@ -94,21 +93,6 @@ const TypesRefreshLazyRoute = TypesRefreshLazyImport.update({
   path: '/types/refresh',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/types/refresh.lazy').then((d) => d.Route))
-const TransmissionRefreshLazyRoute = TransmissionRefreshLazyImport.update({
-  id: '/transmission/refresh',
-  path: '/transmission/refresh',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/transmission/refresh.lazy').then((d) => d.Route),
-)
-
-const TransmissionCreateLazyRoute = TransmissionCreateLazyImport.update({
-  id: '/transmission/create',
-  path: '/transmission/create',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/transmission/create.lazy').then((d) => d.Route),
-)
 
 const TypesCreateLazyRoute = TypesCreateLazyImport.update({
   id: '/types/create',
@@ -148,24 +132,17 @@ const ManufactureCreateLazyRoute = ManufactureCreateLazyImport.update({
   import('./routes/manufacture/create.lazy').then((d) => d.Route),
 )
 
-const FuelCreateLazyRoute = FuelCreateLazyImport.update({
-  id: '/fuel/create',
-  path: '/fuel/create',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/fuel/create.lazy').then((d) => d.Route))
+const FuelsCreateLazyRoute = FuelsCreateLazyImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => FuelsLazyRoute,
+} as any).lazy(() => import('./routes/fuels/create.lazy').then((d) => d.Route))
 
 const FuelCreateLazyRoute = FuelCreateLazyImport.update({
   id: '/fuel/create',
   path: '/fuel/create',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/fuel/create.lazy').then((d) => d.Route))
-const TransmissionEditIdLazyRoute = TransmissionEditIdLazyImport.update({
-  id: '/transmission/edit/$id',
-  path: '/transmission/edit/$id',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/transmission/edit/$id.lazy').then((d) => d.Route),
-)
 
 const TypesEditIdLazyRoute = TypesEditIdLazyImport.update({
   id: '/types/edit/$id',
@@ -175,6 +152,11 @@ const TypesEditIdLazyRoute = TypesEditIdLazyImport.update({
   import('./routes/types/edit/$id.lazy').then((d) => d.Route),
 )
 
+const FuelCreateLazyRoute = FuelCreateLazyImport.update({
+  id: '/fuel/create',
+  path: '/fuel/create',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/fuel/create.lazy').then((d) => d.Route))
 const TransmissionEditIdLazyRoute = TransmissionEditIdLazyImport.update({
   id: '/transmission/edit/$id',
   path: '/transmission/edit/$id',
@@ -319,6 +301,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TransmissionRefreshLazyImport
       parentRoute: typeof rootRoute
     }
+    '/types/create': {
+      id: '/types/create'
+      path: '/types/create'
+      fullPath: '/types/create'
+      preLoaderRoute: typeof TypesCreateLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/types/refresh': {
+      id: '/types/refresh'
+      path: '/types/refresh'
+      fullPath: '/types/refresh'
+      preLoaderRoute: typeof TypesRefreshLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/fuel/edit/$id': {
       id: '/fuel/edit/$id'
       path: '/fuel/edit/$id'
@@ -353,6 +349,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TransmissionEditIdLazyImport
       parentRoute: typeof rootRoute
     }
+    '/types/edit/$id': {
+      id: '/types/edit/$id'
+      path: '/types/edit/$id'
+      fullPath: '/types/edit/$id'
+      preLoaderRoute: typeof TypesEditIdLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -372,7 +375,7 @@ const FuelsLazyRouteWithChildren = FuelsLazyRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/fuels': typeof FuelsLazyRoute
+  '/fuels': typeof FuelsLazyRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
@@ -394,7 +397,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/fuels': typeof FuelsLazyRoute
+  '/fuels': typeof FuelsLazyRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
@@ -417,7 +420,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/fuels': typeof FuelsLazyRoute
+  '/fuels': typeof FuelsLazyRouteWithChildren
   '/login': typeof LoginLazyRoute
   '/profile': typeof ProfileLazyRoute
   '/register': typeof RegisterLazyRoute
@@ -506,7 +509,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  FuelsLazyRoute: typeof FuelsLazyRoute
+  FuelsLazyRoute: typeof FuelsLazyRouteWithChildren
   LoginLazyRoute: typeof LoginLazyRoute
   ProfileLazyRoute: typeof ProfileLazyRoute
   RegisterLazyRoute: typeof RegisterLazyRoute
@@ -527,7 +530,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  FuelsLazyRoute: FuelsLazyRoute,
+  FuelsLazyRoute: FuelsLazyRouteWithChildren,
   LoginLazyRoute: LoginLazyRoute,
   ProfileLazyRoute: ProfileLazyRoute,
   RegisterLazyRoute: RegisterLazyRoute,
@@ -582,7 +585,10 @@ export const routeTree = rootRoute
       "filePath": "index.lazy.jsx"
     },
     "/fuels": {
-      "filePath": "fuels.lazy.jsx"
+      "filePath": "fuels.lazy.jsx",
+      "children": [
+        "/fuels/create"
+      ]
     },
     "/login": {
       "filePath": "login.lazy.jsx"
@@ -599,11 +605,18 @@ export const routeTree = rootRoute
     "/type": {
       "filePath": "type.lazy.jsx"
     },
+<<<<<<< HEAD
+=======
     "/fuel/create": {
       "filePath": "fuel/create.lazy.jsx"
     },
+>>>>>>> 3be67cecdc390c5b5fd5a73d183624c0a1cf4b27
     "/fuel/create": {
       "filePath": "fuel/create.lazy.jsx"
+    },
+    "/fuels/create": {
+      "filePath": "fuels/create.lazy.jsx",
+      "parent": "/fuels"
     },
     "/manufacture/create": {
       "filePath": "manufacture/create.lazy.jsx"
@@ -611,6 +624,8 @@ export const routeTree = rootRoute
     "/manufacture/refresh": {
       "filePath": "manufacture/refresh.lazy.jsx"
     },
+<<<<<<< HEAD
+=======
     "/transmission/create": {
       "filePath": "transmission/create.lazy.jsx"
     },
@@ -622,11 +637,18 @@ export const routeTree = rootRoute
     },
     "/types/refresh": {
       "filePath": "types/refresh.lazy.jsx"
+>>>>>>> 3be67cecdc390c5b5fd5a73d183624c0a1cf4b27
     "/transmission/create": {
       "filePath": "transmission/create.lazy.jsx"
     },
     "/transmission/refresh": {
       "filePath": "transmission/refresh.lazy.jsx"
+    },
+    "/types/create": {
+      "filePath": "types/create.lazy.jsx"
+    },
+    "/types/refresh": {
+      "filePath": "types/refresh.lazy.jsx"
     },
     "/fuel/edit/$id": {
       "filePath": "fuel/edit/$id.lazy.jsx"
@@ -634,13 +656,19 @@ export const routeTree = rootRoute
     "/manufacture/edit/$id": {
       "filePath": "manufacture/edit/$id.lazy.jsx"
     },
+<<<<<<< HEAD
+=======
     "/transmission/edit/$id": {
       "filePath": "transmission/edit/$id.lazy.jsx"
     },
     "/types/edit/$id": {
       "filePath": "types/edit/$id.lazy.jsx"
+>>>>>>> 3be67cecdc390c5b5fd5a73d183624c0a1cf4b27
     "/transmission/edit/$id": {
       "filePath": "transmission/edit/$id.lazy.jsx"
+    },
+    "/types/edit/$id": {
+      "filePath": "types/edit/$id.lazy.jsx"
     }
   }
 }

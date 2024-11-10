@@ -9,10 +9,10 @@ import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export const Route = createLazyFileRoute('/fuels')({
-  component: Index,
+  component: Fuel,
 })
 
-function Index() {
+function Fuel() {
   const { token, user } = useSelector((state) => state.auth)
 
   const navigate = useNavigate()
