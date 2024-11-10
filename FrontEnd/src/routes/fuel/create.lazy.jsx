@@ -23,7 +23,7 @@ function CreateFuel() {
 
   const [type, setType] = useState('')
   const [price, setPrice] = useState('')
-  const [octane_rating, setOctaneRating] = useState('')
+  const [octan_rating, setOctanRating] = useState('')
 
   const onSubmit = async (event) => {
     event.preventDefault()
@@ -31,7 +31,7 @@ function CreateFuel() {
     const request = {
       type,
       price: parseFloat(price),
-      octane_rating: parseInt(octane_rating, 10),
+      octan_rating: parseInt(octan_rating, 10),
     }
 
     const result = await createFuel(request)
@@ -99,9 +99,9 @@ function CreateFuel() {
                     type="number"
                     placeholder="Input Octane Rating"
                     required
-                    value={octane_rating}
+                    value={octan_rating}
                     onChange={(event) => {
-                      setOctaneRating(event.target.value)
+                      setOctanRating(event.target.value)
                     }}
                   />
                 </Col>
@@ -115,7 +115,7 @@ function CreateFuel() {
                     <Button
                       type="submit"
                       variant="primary"
-                      disabled={!type || !price || !octane_rating}
+                      disabled={!type || !price || !octan_rating}
                     >
                       Save
                     </Button>

@@ -55,8 +55,8 @@ function EditFuel() {
 
         const request = {
             type,
-            price,
-            octan_rating,
+            price: parseFloat(price),
+            octan_rating: parseInt(octan_rating, 10),
         };
         const result = await updateFuel(id, request);
         if (result?.success) {
@@ -126,7 +126,7 @@ function EditFuel() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="octane_rating"
+                                controlId="octan_rating"
                             >
                                 <Form.Label column sm={3}>
                                     Octane Rating
@@ -155,7 +155,7 @@ function EditFuel() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!type || !price || !octane_rating}
+                                            disabled={!type || !price || !octan_rating}
                                         >
                                             Save
                                         </Button>

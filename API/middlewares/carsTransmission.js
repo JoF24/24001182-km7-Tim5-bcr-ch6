@@ -56,7 +56,7 @@ exports.validateCreateCarsTransmission = (req, res, next) => {
 
 exports.validateUpdateCarsTransmission = (req, res, next) => {
     const validateParams = z.object({
-        id: z.string(),
+        id: z.string()
     });
 
     const resultValidateParams = validateParams.safeParse(req.params);

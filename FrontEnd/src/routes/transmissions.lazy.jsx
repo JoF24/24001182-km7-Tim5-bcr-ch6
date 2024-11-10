@@ -85,3 +85,5 @@ function Transmission() {
     </>
   )
 }
+
+export default Transmission
