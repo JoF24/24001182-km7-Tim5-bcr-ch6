@@ -6,7 +6,8 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { register } from "../service/auth"; 
+import { register } from "../service/auth";
+import { setToken } from "../redux/slices/auth"; 
 import Image from 'react-bootstrap/Image';
 import carImage from '../assets/carslr2.png';
 import './Register.css'; 
@@ -24,6 +25,7 @@ function Register() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [profilePicture, setProfilePicture] = useState(undefined);
+    const {token} = useSelector((state)=>state.auth);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -49,8 +51,7 @@ function Register() {
         try {
             const result = await register(request);
             if (result.success) {
-                dispatch(registerSuccess({ user: result.data.user, token: result.data.token }));
-
+                dispatch(setToken(result.data.token));
                 navigate({ to: "/" });
                 return;
             }
