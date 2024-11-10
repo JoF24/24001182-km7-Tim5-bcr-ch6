@@ -29,15 +29,7 @@ const TransmissionRefreshLazyImport = createFileRoute('/transmission/refresh')()
 const TransmissionCreateLazyImport = createFileRoute('/transmission/create')()
 const ManufactureRefreshLazyImport = createFileRoute('/manufacture/refresh')()
 const ManufactureCreateLazyImport = createFileRoute('/manufacture/create')()
-const FuelsCreateLazyImport = createFileRoute('/fuels/create')()
-const FuelCreateLazyImport = createFileRoute('/fuel/create')()
-const TypesEditIdLazyImport = createFileRoute('/types/edit/$id')()
-const TransmissionEditIdLazyImport = createFileRoute('/transmission/edit/$id')()
-const TransmissionRefreshLazyImport = createFileRoute('/transmission/refresh')()
-const TransmissionCreateLazyImport = createFileRoute('/transmission/create')()
-const ManufactureRefreshLazyImport = createFileRoute('/manufacture/refresh')()
-const ManufactureCreateLazyImport = createFileRoute('/manufacture/create')()
-const FuelsCreateLazyImport = createFileRoute('/fuels/create')()
+const FuelRefreshLazyImport = createFileRoute('/fuel/refresh')()
 const FuelCreateLazyImport = createFileRoute('/fuel/create')()
 const TypesEditIdLazyImport = createFileRoute('/types/edit/$id')()
 const TransmissionEditIdLazyImport = createFileRoute('/transmission/edit/$id')()
@@ -548,18 +540,11 @@ export const routeTree = rootRoute
     "/type": {
       "filePath": "type.lazy.jsx"
     },
-<<<<<<< HEAD
-=======
     "/fuel/create": {
       "filePath": "fuel/create.lazy.jsx"
     },
->>>>>>> 3be67cecdc390c5b5fd5a73d183624c0a1cf4b27
-    "/fuel/create": {
-      "filePath": "fuel/create.lazy.jsx"
-    },
-    "/fuels/create": {
-      "filePath": "fuels/create.lazy.jsx",
-      "parent": "/fuels"
+    "/fuel/refresh": {
+      "filePath": "fuel/refresh.lazy.jsx"
     },
     "/manufacture/create": {
       "filePath": "manufacture/create.lazy.jsx"

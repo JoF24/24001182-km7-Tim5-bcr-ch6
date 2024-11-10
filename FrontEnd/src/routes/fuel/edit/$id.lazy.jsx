@@ -24,7 +24,7 @@ function EditFuel() {
 
     const [type, setType] = useState("");
     const [price, setPrice] = useState("");
-    const [octane_rating, setOctaneRating] = useState("");
+    const [octan_rating, setOctanRating] = useState("");
     const [isNotFound, setIsNotFound] = useState(false);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ function EditFuel() {
             if (result?.success) {
                 setType(result.data?.type);
                 setPrice(result.data?.price);
-                setOctaneRating(result.data?.octan_rating);
+                setOctanRating(result.data?.octan_rating);
                 setIsNotFound(false);
             } else {
                 setIsNotFound(true);
@@ -55,8 +55,8 @@ function EditFuel() {
 
         const request = {
             type,
-            price: parseFloat(price),
-            octane_rating: parseInt(octane_rating, 10),
+            price,
+            octan_rating,
         };
         const result = await updateFuel(id, request);
         if (result?.success) {
@@ -136,9 +136,9 @@ function EditFuel() {
                                         type="number"
                                         placeholder="Octane Rating"
                                         required
-                                        value={octane_rating}
+                                        value={octan_rating}
                                         onChange={(event) => {
-                                            setOctaneRating(event.target.value);
+                                            setOctanRating(event.target.value);
                                         }}
                                     />
                                 </Col>

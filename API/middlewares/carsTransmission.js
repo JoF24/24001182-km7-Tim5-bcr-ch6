@@ -57,13 +57,6 @@ exports.validateCreateCarsTransmission = (req, res, next) => {
 exports.validateUpdateCarsTransmission = (req, res, next) => {
     const validateParams = z.object({
         id: z.string(),
-        number_of_gears: z.string().transform((val) => {
-            const parsed = parseInt(val, 10);
-            if (isNaN(parsed)) {
-                throw new Error('Octan rating must be a valid integer');
-            }
-            return parsed;
-        }),
     });
 
     const resultValidateParams = validateParams.safeParse(req.params);
