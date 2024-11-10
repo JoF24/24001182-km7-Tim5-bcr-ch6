@@ -9,7 +9,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-import { deleteManufacture } from "../../service/Manufacture";
+import { deleteType } from "../../service/Types";
 import { toast } from "react-toastify";
 import deleteIcon from "../../assets/trash.png";
 import editIcon from "../../assets/edit.png";
@@ -31,7 +31,7 @@ const TypeItem = ({ type }) => {
                         const result = await deleteType(type.id);
                         if (result?.success) {
                             navigate({ 
-                                to: "type/refresh",
+                                to: "/types/refresh",
                                 state: { successMessage: "Data Type berhasil dihapus." }
                             });
                         }
@@ -79,7 +79,7 @@ const TypeItem = ({ type }) => {
                                             <div className="d-grid gap-2">
                                                 <Button
                                                     as={Link}
-                                                    href={`/manufacture/edit/${type?.id}`}
+                                                    href={`/types/edit/${type?.id}`}
                                                     variant="success"
                                                     size="md"
                                                 >

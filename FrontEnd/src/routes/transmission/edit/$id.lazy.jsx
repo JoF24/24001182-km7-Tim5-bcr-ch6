@@ -7,31 +7,31 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import { toast } from "react-toastify";
-import { getDetailManufacture, updateManufacture } from "../../../service/Manufacture";
+import { getDetailTransmission, updateTransmission } from "../../../service/transmission";
 import Protected from "../../../components/Auth/Protected";
 
-export const Route = createLazyFileRoute("/manufacture/edit/$id")({
+export const Route = createLazyFileRoute("/transmission/edit/$id")({
     component: () => (
         <Protected roles={[1]}>
-            <EditManufacture />
+            <EditTransmission />
         </Protected>
     ),
 });
 
-function EditManufacture() {
+function EditTransmission() {
     const { id } = Route.useParams();
     const navigate = useNavigate();
 
-    const [manufacture, setManufacture] = useState("");
-    const [address, setAddress] = useState("");
+    const [types, setTypes] = useState("");
+    const [number_of_gears, setNumberOfGears] = useState("");
     const [isNotFound, setIsNotFound] = useState(false);
 
     useEffect(() => {
-        const getDetailManufactureData = async (id) => {
-            const result = await getDetailManufacture(id);
+        const getDetailTransmissionData = async (id) => {
+            const result = await getDetailTransmission(id);
             if (result?.success) {
-                setManufacture(result.data?.manufacture);
-                setAddress(result.data?.address);
+                setTypes(result.data?.type);
+                setNumberOfGears(result.data?.number_of_gears);
                 setIsNotFound(false);
             } else {
                 setIsNotFound(true);
@@ -39,12 +39,12 @@ function EditManufacture() {
         };
 
         if (id) {
-            getDetailManufactureData(id);
+            getDetailTransmissionData(id);
         }
     }, [id]);
 
     if (isNotFound) {
-        navigate({ to: "/" });
+        navigate({ to: "/transmissions" });
         return;
     }
 
@@ -52,13 +52,13 @@ function EditManufacture() {
         event.preventDefault();
 
         const request = {
-            manufacture,
-            address
+            type,
+            number_of_gears: parseInt(number_of_gears, 10),
         };
-        const result = await updateManufacture(id, request);
+        const result = await updateTransmission(id, request);
         if (result?.success) {
-            navigate({ to: `/`,
-                state: { successMessage: "Data Manufacture berhasil diperbarui !!" }
+            navigate({ to: `/transmissions`,
+                state: { successMessage: "Data Transmission berhasil diperbarui !!" }
             });
             return;
         }
@@ -67,7 +67,7 @@ function EditManufacture() {
     };
 
     const handleCancel = () => {
-        navigate({ to: "/" });
+        navigate({ to: "/transmissions" });
         return;
     };
 
@@ -76,26 +76,26 @@ function EditManufacture() {
             <Col className="offset-md-3">
                 <Card>
                     <Card.Header className="text-center">
-                        Edit Manufacture Data With ID {id}
+                        Edit Transmission Data With ID {id}
                     </Card.Header>
                     <Card.Body>
                         <Form onSubmit={onSubmit}>
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="manufacture"
+                                controlId="types"
                             >
                                 <Form.Label column sm={3}>
-                                    Manufacture
+                                    Transmission Types
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
                                         type="text"
-                                        placeholder="Input Manufacture Here"
+                                        placeholder="Input Transmission Types Here"
                                         required
-                                        value={manufacture}
+                                        value={types}
                                         onChange={(event) => {
-                                            setManufacture(event.target.value);
+                                            setTypes(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -103,19 +103,19 @@ function EditManufacture() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="address"
+                                controlId="number_of_gears"
                             >
                                 <Form.Label column sm={3}>
-                                    Address
+                                    Number of Gears
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
-                                        type="text"
-                                        placeholder="Input Address Here"
+                                        type="number"
+                                        placeholder="Number of Gears"
                                         required
-                                        value={address}
+                                        value={number_of_gears}
                                         onChange={(event) => {
-                                            setAddress(event.target.value);
+                                            setNumberOfGears(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -132,7 +132,7 @@ function EditManufacture() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!manufacture || !address}
+                                            disabled={!types || !number_of_gears}
                                         >
                                             Save
                                         </Button>

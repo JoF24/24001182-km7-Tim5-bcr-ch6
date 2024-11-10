@@ -41,7 +41,7 @@ const TwoToneSidebar = ({ isOpen, toggleSidebar }) => {
             <Nav.Link as={Link} to="/transmissions" className="sidebar-link-right">
               Transmission
             </Nav.Link>
-            <Nav.Link as={Link} to="/about" className="sidebar-link-right">
+            <Nav.Link as={Link} to="/type" className="sidebar-link-right">
               Type
             </Nav.Link>
           </Nav>

@@ -5,36 +5,36 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { createManufacture } from "../../service/Manufacture";
+import { createType } from "../../service/Types";
 import Protected from "../../components/Auth/Protected";
 import Container from "react-bootstrap/esm/Container";
 
 export const Route = createLazyFileRoute("/types/create")({
     component: () => (
         <Protected roles={[1]}>
-            <CreateManufacture />
+            <CreateType />
         </Protected>
     ),
 });
 
-function CreateManufacture() {
+function CreateType() {
     const navigate = useNavigate();
 
-    const [manufacture, setManufacture] = useState("");
-    const [address, setAddress] = useState("");
+    const [type, setType] = useState("");
+    const [description, setDescription] = useState("");
 
     const onSubmit = async (event) => {
         event.preventDefault();
 
         const request = {
-            manufacture,
-            address
+            type,
+            description
         };
 
-        const result = await createManufacture(request);
+        const result = await createType(request);
         if (result?.success) {
-            navigate({ to: "/",
-                state: { successMessage: "Data Manufacture berhasil ditambahkan!!" }
+            navigate({ to: "/type",
+                state: { successMessage: "Data Type berhasil ditambahkan!!" }
              });
             return;
         }
@@ -43,7 +43,7 @@ function CreateManufacture() {
     };
 
     const handleCancel = () => {
-        navigate({ to: "/" });
+        navigate({ to: "/type" });
         return;
     };
 
@@ -51,7 +51,7 @@ function CreateManufacture() {
         <Row className="mt-5">
             <Col className="offset-md-3">
                 <div className="text-center mb-3">
-                    <h3>Add New Manufacture</h3>
+                    <h3>Add New Type</h3>
                 </div>
                 <Card>
                     <Card.Body>
@@ -59,19 +59,19 @@ function CreateManufacture() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="manufacture"
+                                controlId="type"
                             >
                                 <Form.Label column sm={3}>
-                                    Manufacture
+                                    Type
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
                                         type="text"
-                                        placeholder="Input Manufacture Name"
+                                        placeholder="Input Type Name"
                                         required
-                                        value={manufacture}
+                                        value={type}
                                         onChange={(event) => {
-                                            setManufacture(event.target.value);
+                                            setType(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -79,19 +79,19 @@ function CreateManufacture() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="address"
+                                controlId="description"
                             >
                                 <Form.Label column sm={3}>
-                                    Address
+                                    Description
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
                                         type="text"
-                                        placeholder="Input Address"
+                                        placeholder="Input Description"
                                         required
-                                        value={address}
+                                        value={description}
                                         onChange={(event) => {
-                                            setAddress(event.target.value);
+                                            setDescription(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -108,7 +108,7 @@ function CreateManufacture() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!manufacture || !address}
+                                            disabled={!type || !description}
                                         >
                                             Save
                                         </Button>

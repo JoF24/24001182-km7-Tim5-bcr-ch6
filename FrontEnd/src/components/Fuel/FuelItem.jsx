@@ -78,7 +78,7 @@ const FuelItem = ({ fuel }) => {
                                         <div className="d-grid gap-2">
                                             <Button
                                                 as={Link}
-                                                to={`/fuels/edit/${fuel?.id}`}
+                                                to={`/fuel/edit/${fuel?.id}`}
                                                 variant="success"
                                                 size="md"
                                             >
