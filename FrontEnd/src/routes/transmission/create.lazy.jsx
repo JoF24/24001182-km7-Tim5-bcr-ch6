@@ -20,14 +20,14 @@ export const Route = createLazyFileRoute("/transmission/create")({
 function CreateTransmission() {
     const navigate = useNavigate();
 
-    const [types, setTypes] = useState("");
+    const [type, setTypes] = useState("");
     const [number_of_gears, setNumberOfGears] = useState("");
 
     const onSubmit = async (event) => {
         event.preventDefault();
 
         const request = {
-            types,
+            type,
             number_of_gears: parseInt(number_of_gears, 10),
         };
 
@@ -59,7 +59,7 @@ function CreateTransmission() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="types"
+                                controlId="type"
                             >
                                 <Form.Label column sm={3}>
                                     Transmission Types
@@ -69,7 +69,7 @@ function CreateTransmission() {
                                         type="text"
                                         placeholder="Input Transmission Types"
                                         required
-                                        value={types}
+                                        value={type}
                                         onChange={(event) => {
                                             setTypes(event.target.value);
                                         }}
@@ -108,7 +108,7 @@ function CreateTransmission() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!types || !number_of_gears}
+                                            disabled={!type || !number_of_gears}
                                         >
                                             Save
                                         </Button>
