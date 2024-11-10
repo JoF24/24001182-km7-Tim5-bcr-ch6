@@ -24,7 +24,7 @@ function EditFuel() {
 
     const [type, setType] = useState("");
     const [price, setPrice] = useState("");
-    const [octane_rating, setOctaneRating] = useState("");
+    const [octan_rating, setOctanRating] = useState("");
     const [isNotFound, setIsNotFound] = useState(false);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ function EditFuel() {
             if (result?.success) {
                 setType(result.data?.type);
                 setPrice(result.data?.price);
-                setOctaneRating(result.data?.octan_rating);
+                setOctanRating(result.data?.octan_rating);
                 setIsNotFound(false);
             } else {
                 setIsNotFound(true);
@@ -56,7 +56,7 @@ function EditFuel() {
         const request = {
             type,
             price: parseFloat(price),
-            octane_rating: parseInt(octane_rating, 10),
+            octan_rating: parseInt(octan_rating, 10),
         };
         const result = await updateFuel(id, request);
         if (result?.success) {
@@ -126,7 +126,7 @@ function EditFuel() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="octane_rating"
+                                controlId="octan_rating"
                             >
                                 <Form.Label column sm={3}>
                                     Octane Rating
@@ -136,9 +136,9 @@ function EditFuel() {
                                         type="number"
                                         placeholder="Octane Rating"
                                         required
-                                        value={octane_rating}
+                                        value={octan_rating}
                                         onChange={(event) => {
-                                            setOctaneRating(event.target.value);
+                                            setOctanRating(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -155,7 +155,7 @@ function EditFuel() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!type || !price || !octane_rating}
+                                            disabled={!type || !price || !octan_rating}
                                         >
                                             Save
                                         </Button>

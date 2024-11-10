@@ -75,3 +75,5 @@ function Fuel() {
     </>
   )
 }
+
+export default Fuel
