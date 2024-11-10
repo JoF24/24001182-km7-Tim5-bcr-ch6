@@ -5,30 +5,35 @@ import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import PropTypes from "prop-types";
+import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-import { deleteStudent } from "../../service/student";
+import { deleteManufacture } from "../../service/Manufacture";
+import { toast } from "react-toastify";
 import deleteIcon from "../../assets/trash.png";
 import editIcon from "../../assets/edit.png";
 
-const StudentItem = ({ student }) => {
+const TypeItem = ({ type }) => {
     const { user } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
 
     const onDelete = async (event) => {
         event.preventDefault();
 
         confirmAlert({
-            title: "Menghapus Data Mobil",
-            message: "Setelah dihapus, data mobil tidak dapat dikembalikan. Yakin ingin menghapus?",
+            title: "Menghapus Data Type",
+            message: "Setelah dihapus, data type tidak dapat dikembalikan. Yakin ingin menghapus?",
             buttons: [
                 {
                     label: "Ya",
                     onClick: async () => {
-                        const result = await deleteStudent(student.id);
+                        const result = await deleteType(type.id);
                         if (result?.success) {
-                            fetchData();
-                            toast.success("Data mobil berhasil dihapus.");
+                            navigate({ 
+                                to: "type/refresh",
+                                state: { successMessage: "Data Type berhasil dihapus." }
+                            });
                         }
                         toast.error(result?.message);
                     },
@@ -42,12 +47,11 @@ const StudentItem = ({ student }) => {
     };
 
     return (
-        <Col md={3} style={{ marginRight: "2rem", margin}}>
+        <Col md={3} style={{ marginRight: "3rem", marginBottom: "2rem"}}>
             <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" src={student?.profile_picture} />
                 <Card.Body>
-                    <Card.Title>{student?.name}</Card.Title>
-                    <Card.Text>{student?.nick_name}</Card.Text>
+                    <Card.Title>{type?.type}</Card.Title>
+                    <Card.Text>{type?.description}</Card.Text>
 
                     {user?.role_id === 1 && (
                             <>
@@ -75,7 +79,7 @@ const StudentItem = ({ student }) => {
                                             <div className="d-grid gap-2">
                                                 <Button
                                                     as={Link}
-                                                    href={`/students/edit/${student?.id}`}
+                                                    href={`/manufacture/edit/${type?.id}`}
                                                     variant="success"
                                                     size="md"
                                                 >
@@ -100,8 +104,8 @@ const StudentItem = ({ student }) => {
     );
 };
 
-StudentItem.propTypes = {
-    student: PropTypes.object,
+TypeItem.propTypes = {
+    type: PropTypes.object,
 };
 
-export default StudentItem;
+export default TypeItem;

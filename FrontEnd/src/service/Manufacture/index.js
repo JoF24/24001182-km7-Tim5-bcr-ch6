@@ -15,7 +15,6 @@ export const getManufacture = async (id) => {
         method: "GET",
     });
 
-    // get data
     const result = await response.json();
     return result;
 };
