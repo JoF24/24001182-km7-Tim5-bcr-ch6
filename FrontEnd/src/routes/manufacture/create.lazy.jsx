@@ -1,5 +1,5 @@
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
@@ -7,7 +7,6 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { createManufacture } from "../../service/Manufacture";
 import Protected from "../../components/Auth/Protected";
-import { toast, ToastContainer } from "react-toastify";
 import Container from "react-bootstrap/esm/Container";
 
 export const Route = createLazyFileRoute("/manufacture/create")({
@@ -34,8 +33,9 @@ function CreateManufacture() {
 
         const result = await createManufacture(request);
         if (result?.success) {
-            sessionStorage.setItem("successMessage", "Data berhasil ditambahkan!");
-            navigate({ to: "/" });
+            navigate({ to: "/",
+                state: { successMessage: "Data Manufacture berhasil ditambahkan!!" }
+             });
             return;
         }
 

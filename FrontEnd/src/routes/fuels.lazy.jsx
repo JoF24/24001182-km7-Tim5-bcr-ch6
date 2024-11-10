@@ -1,4 +1,4 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
+import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Row from 'react-bootstrap/Row'
@@ -16,6 +16,7 @@ export const Route = createLazyFileRoute('/fuels')({
 function Index() {
   const { token,user } = useSelector((state) => state.auth)
 
+  const navigate = useNavigate();
   const [fuels, setFuels] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 

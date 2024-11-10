@@ -11,14 +11,12 @@ import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import { deleteManufacture } from "../../service/Manufacture";
 import { toast } from "react-toastify";
-import { useState } from "react";
 import deleteIcon from "../../assets/trash.png";
 import editIcon from "../../assets/edit.png";
 
 const ManufactureItem = ({ manufacture }) => {
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
-    const [refresh, setRefresh] = useState(false);
 
     const onDelete = async (event) => {
         event.preventDefault();
@@ -32,8 +30,10 @@ const ManufactureItem = ({ manufacture }) => {
                     onClick: async () => {
                         const result = await deleteManufacture(manufacture.id);
                         if (result?.success) {
-                            toast.success("Data Manufacture berhasil dihapus.");
-                            navigate({ to: "manufacture/refresh"});
+                            navigate({ 
+                                to: "manufacture/refresh",
+                                state: { successMessage: "Data Manufacture berhasil dihapus." }
+                            });
                         }
                         toast.error(result?.message);
                     },
@@ -47,7 +47,7 @@ const ManufactureItem = ({ manufacture }) => {
     };
 
     return (
-        <Col md={3} style={{ marginRight: "2rem", marginBottom: "1rem"}}>
+        <Col md={3} style={{ marginRight: "3rem", marginBottom: "2rem"}}>
             <Card style={{ width: "18rem" }}>
                 <Card.Body>
                     <Card.Title>{manufacture?.manufacture}</Card.Title>

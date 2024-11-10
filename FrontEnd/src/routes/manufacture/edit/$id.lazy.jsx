@@ -57,7 +57,9 @@ function EditManufacture() {
         };
         const result = await updateManufacture(id, request);
         if (result?.success) {
-            navigate({ to: `/` });
+            navigate({ to: `/`,
+                state: { successMessage: "Data Manufacture berhasil diperbarui !!" }
+            });
             return;
         }
 
