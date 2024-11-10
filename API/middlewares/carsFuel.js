@@ -4,7 +4,7 @@ const { BadRequestError } = require("../utils/request");
 exports.validateGetCarsFuel = (req, res, next) => {
     const validateQuery = z.object({
         type: z.string().optional().nullable(),
-        price: z.string().optional().transform((val) => {
+        price: z.number().optional().transform((val) => {
             if (!val) return undefined; // Jika tidak ada nilai, biarkan undefined
             const parsed = parseFloat(val);
             if (isNaN(parsed)) {
@@ -12,7 +12,7 @@ exports.validateGetCarsFuel = (req, res, next) => {
             }
             return parsed;
         }),
-        octan_rating: z.string().optional().transform((val) => {
+        octan_rating: z.number().optional().transform((val) => {
             if (!val) return undefined; // Jika tidak ada nilai, biarkan undefined
             const parsed = parseInt(val, 10);
             if (isNaN(parsed)) {
