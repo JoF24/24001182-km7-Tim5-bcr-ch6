@@ -10,7 +10,7 @@ import { createFuel } from '../../service/fuel'
 import { toast, ToastContainer } from 'react-toastify'
 import Protected from '../../components/Auth/Protected'
 
-export const Route = createLazyFileRoute('/fuels/create')({
+export const Route = createLazyFileRoute("/fuels/create")({
   component: () => (
     <Protected roles={[1]}>
       <CreateFuel />
@@ -109,5 +109,3 @@ function CreateFuel() {
     </Container>
   )
 }
-
-export default CreateFuel

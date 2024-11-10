@@ -1,11 +1,12 @@
 import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { useLocation } from '@tanstack/react-router';
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import { getManufacture } from '../service/Manufacture'
 import ManufactureItem from '../components/Manufacture/ManufactureItem'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export const Route = createLazyFileRoute('/')({
@@ -14,8 +15,10 @@ export const Route = createLazyFileRoute('/')({
 
 function Index() {
   const { token,user } = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
+  const location = useLocation();
+  const hasShownToast = useRef(false);
+  const [successMessage, setSuccessMessage] = useState(location.state?.successMessage || null);
   const [manufacture, setManufacture] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -35,17 +38,16 @@ function Index() {
   }, [token])
 
   useEffect(() => {
-    const successMessage = sessionStorage.getItem('successMessage')
-    if (successMessage) {
-      toast.success(successMessage)
-
-      sessionStorage.removeItem('successMessage')
+    if (successMessage && !hasShownToast.current) {
+        toast.success(successMessage);
+        setSuccessMessage(null);
+        history.replaceState({ ...location.state, successMessage: null }, "");
+        hasShownToast.current = true;
     }
-  }, [])
+  }, [successMessage]);
 
   return (
     <>
-      <ToastContainer />
       <Row className="mt-4">
         {user?.role_id === 1 && (
           <>

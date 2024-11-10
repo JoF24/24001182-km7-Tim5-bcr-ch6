@@ -26,13 +26,13 @@ const TwoToneSidebar = ({ isOpen, toggleSidebar }) => {
         <div className="sidebar-right">
           {/* Bagian kanan putih */}
           <Nav className="flex-column">
-            <Nav.Link as={Link} to="/" className="sidebar-link-right">
+            <Nav.Link as={Link} to="/cars" className="sidebar-link-right">
               List Cars 
             </Nav.Link>
             <Nav.Link as={Link} to="/fuels" className="sidebar-link-right">
               Fuel
             </Nav.Link>
-            <Nav.Link as={Link} to="/Manufacture" className="sidebar-link-right">
+            <Nav.Link as={Link} to="/" className="sidebar-link-right">
               Manufacture
             </Nav.Link>
             <Nav.Link as={Link} to="/about" className="sidebar-link-right">
