@@ -1,11 +1,11 @@
-export const getManufacture = async (id) => {
+export const getType = async (id) => {
     const token = localStorage.getItem("token");
     let params;
     if (id) {
         params.id = id;
     }
     let url =
-        `${import.meta.env.VITE_API_URL}/carsManufacture` +
+        `${import.meta.env.VITE_API_URL}/carsType` +
         new URLSearchParams(params);
 
     const response = await fetch(url, {
@@ -19,10 +19,10 @@ export const getManufacture = async (id) => {
     return result;
 };
 
-export const getDetailManufacture = async (id) => {
+export const getDetailType = async (id) => {
     const token = localStorage.getItem("token");
 
-    let url = `${import.meta.env.VITE_API_URL}/carsManufacture/${id}`;
+    let url = `${import.meta.env.VITE_API_URL}/carsType/${id}`;
 
     const response = await fetch(url, {
         headers: {
@@ -36,14 +36,14 @@ export const getDetailManufacture = async (id) => {
     return result;
 };
 
-export const createManufacture = async (request) => {
+export const createType = async (request) => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
-    formData.append("manufacture", request.manufacture);
-    formData.append("address", request.address);
+    formData.append("type", request.type);
+    formData.append("description", request.description);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/carsManufacture`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/carsType`, {
         headers: {
             authorization: `Bearer ${token}`,
         },
@@ -56,14 +56,14 @@ export const createManufacture = async (request) => {
     return result;
 };
 
-export const updateManufacture = async (id, request) => {
+export const updateType = async (id, request) => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
-    formData.append("manufacture", request.manufacture);
-    formData.append("address", request.address);
+    formData.append("type", request.type);
+    formData.append("description", request.description);
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/carsManufacture/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/carsType/${id}`, {
         headers: {
             authorization: `Bearer ${token}`,
         },
@@ -76,10 +76,10 @@ export const updateManufacture = async (id, request) => {
     return result;
 };
 
-export const deleteManufacture = async (id) => {
+export const deleteType = async (id) => {
     const token = localStorage.getItem("token");
 
-    let url = `${import.meta.env.VITE_API_URL}/carsManufacture/${id}`;
+    let url = `${import.meta.env.VITE_API_URL}/carsType/${id}`;
 
     const response = await fetch(url, {
         headers: {
