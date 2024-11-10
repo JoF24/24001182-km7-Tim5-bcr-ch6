@@ -1,21 +1,26 @@
 import { createLazyFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
+import { useLocation } from '@tanstack/react-router'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import { getTransmissions } from '../service/transmission'
 import TransmissionItem from '../components/Transmission/TransmissionItem'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 export const Route = createLazyFileRoute('/transmissions')({
-  component: Index,
+  component: Transmission,
 })
 
-function Index() {
+function Transmission() {
   const { token, user } = useSelector((state) => state.auth)
-
   const navigate = useNavigate()
+  const location = useLocation()
+  const hasShownToast = useRef(false)
+  const [successMessage, setSuccessMessage] = useState(
+    location.state?.successMessage || null,
+  )
   const [transmissions, setTransmissions] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -35,21 +40,26 @@ function Index() {
   }, [token])
 
   useEffect(() => {
-    const successMessage = sessionStorage.getItem('successMessage')
-    if (successMessage) {
+    if (successMessage && !hasShownToast.current) {
       toast.success(successMessage)
-      sessionStorage.removeItem('successMessage')
+      setSuccessMessage(null)
+      history.replaceState({ ...location.state, successMessage: null }, '')
+      hasShownToast.current = true
     }
-  }, [])
+  }, [successMessage])
 
   return (
     <>
-      <ToastContainer />
       <Row className="mt-4">
         {user?.role_id === 1 && (
           <>
             <div className="d-flex justify-content-end mb-3">
-              <Button as={Link} to="/transmission/create" variant="primary" size="md">
+              <Button
+                as={Link}
+                to="/transmission/create"
+                variant="primary"
+                size="md"
+              >
                 + Tambah Data
               </Button>
             </div>
@@ -61,14 +71,17 @@ function Index() {
         {isLoading ? (
           <h1>Loading....</h1>
         ) : transmissions.length === 0 ? (
-          <h1>Transmission data is not found!</h1>
+          <h1>Transmission data is not found !</h1>
         ) : (
           transmissions.length > 0 &&
-          transmissions.map((transmission) => <TransmissionItem transmission={transmission} key={transmission?.id} />)
+          transmissions.map((transmission) => (
+            <TransmissionItem
+              transmission={transmission}
+              key={transmission?.id}
+            />
+          ))
         )}
       </Row>
     </>
   )
 }
-
-export default Index
