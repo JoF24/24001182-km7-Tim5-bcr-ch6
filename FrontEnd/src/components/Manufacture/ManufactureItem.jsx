@@ -1,41 +1,39 @@
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import PropTypes from "prop-types";
-import { useNavigate } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router"; 
 import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-import { deleteManufacture } from "../../service/Manufacture";
+import { deleteFuel } from "../../service/fuel";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import deleteIcon from "../../assets/trash.png";
 import editIcon from "../../assets/edit.png";
+import Image from "react-bootstrap/Image";
 
-const ManufactureItem = ({ manufacture }) => {
+const FuelItem = ({ fuel }) => {
     const { user } = useSelector((state) => state.auth);
-    const navigate = useNavigate();
 
     const onDelete = async (event) => {
         event.preventDefault();
 
         confirmAlert({
-            title: "Menghapus Data Manufacture",
-            message: "Setelah dihapus, data manufacture tidak dapat dikembalikan. Yakin ingin menghapus?",
+            title: "Menghapus Data Bahan Bakar",
+            message: "Setelah dihapus, data bahan bakar tidak dapat dikembalikan. Yakin ingin menghapus?",
             buttons: [
                 {
                     label: "Ya",
                     onClick: async () => {
-                        const result = await deleteManufacture(manufacture.id);
+                        const result = await deleteFuel(fuel.id);
                         if (result?.success) {
-                            navigate({ 
-                                to: "manufacture/refresh",
-                                state: { successMessage: "Data Manufacture berhasil dihapus." }
-                            });
+                            fetchData(); 
+                            toast.success("Data bahan bakar berhasil dihapus.");
+                        } else {
+                            toast.error(result?.message);
                         }
-                        toast.error(result?.message);
                     },
                 },
                 {
@@ -47,23 +45,24 @@ const ManufactureItem = ({ manufacture }) => {
     };
 
     return (
-        <Col md={3} style={{ marginRight: "3rem", marginBottom: "2rem"}}>
+        <Col md={3} style={{ marginRight: "2rem" }}>
             <Card style={{ width: "18rem" }}>
                 <Card.Body>
-                    <Card.Title>{manufacture?.manufacture}</Card.Title>
-                    <Card.Text>{manufacture?.address}</Card.Text>
+                    <Card.Title>{fuel?.type}</Card.Title>
+                    <Card.Text>Price: {fuel?.price}</Card.Text>
+                    <Card.Text>Octan Rating: {fuel?.octan_rating}</Card.Text>
 
                     {user?.role_id === 1 && (
-                            <>
-                                <Container>
-                                    <Row>
-                                        <Col>
-                                            <div className="d-grid gap-2">
-                                                <Button
-                                                    onClick={onDelete}
-                                                    variant="outline-danger"
-                                                    size="md"
-                                                >
+                        <>
+                            <Container>
+                                <Row>
+                                    <Col>
+                                        <div className="d-grid gap-2">
+                                            <Button
+                                                onClick={onDelete}
+                                                variant="outline-danger"
+                                                size="md"
+                                            >
                                                 <Image
                                                     src={deleteIcon}
                                                     alt="Delete Icon"
@@ -71,41 +70,41 @@ const ManufactureItem = ({ manufacture }) => {
                                                     height={20}
                                                     className="me-2"
                                                 />
-                                                    Delete
-                                                </Button>
-                                            </div>
-                                        </Col>
-                                        <Col>
-                                            <div className="d-grid gap-2">
-                                                <Button
-                                                    as={Link}
-                                                    href={`/manufacture/edit/${manufacture?.id}`}
-                                                    variant="success"
-                                                    size="md"
-                                                >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <div className="d-grid gap-2">
+                                            <Button
+                                                as={Link}
+                                                to={`/fuel/edit/${fuel?.id}`}
+                                                variant="success"
+                                                size="md"
+                                            >
                                                 <Image
                                                     src={editIcon}
                                                     alt="Edit Icon"
-                                                    width={20}
+                                                    width={25}
                                                     height={20}
                                                     className="me-2"
                                                 />
-                                                    Edit
-                                                </Button>
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Container>                            
-                            </>
-                        )}
+                                                Edit
+                                            </Button>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </>
+                    )}
                 </Card.Body>
             </Card>
         </Col>
     );
 };
 
-ManufactureItem.propTypes = {
-    manufacture: PropTypes.object,
+FuelItem.propTypes = {
+    fuel: PropTypes.object.isRequired,
 };
 
-export default ManufactureItem;
+export default FuelItem;
