@@ -130,3 +130,5 @@ function CreateFuel() {
     </Row>
   )
 }
+
+export default CreateFuel;

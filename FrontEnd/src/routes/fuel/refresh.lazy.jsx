@@ -2,11 +2,11 @@ import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
 import { useLocation } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-export const Route = createLazyFileRoute('/transmission/refresh')({
-  component: () => RefreshTransmission(),
+export const Route = createLazyFileRoute('/fuel/refresh')({
+  component: () => RefreshFuel(),
 })
 
-function RefreshTransmission() {
+function RefreshFuel() {
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -14,10 +14,10 @@ function RefreshTransmission() {
     if (location.state?.successMessage) {
       navigate({
         to: '/',
-        state: { successMessage: 'Data Transmission berhasil dihapus !!' },
+        state: { successMessage: 'Data Fuel berhasil dihapus !!' },
       })
     } else {
-      navigate({ to: '/' })
+      navigate({ to: '/fuels' })
     }
   }, [location.state])
 

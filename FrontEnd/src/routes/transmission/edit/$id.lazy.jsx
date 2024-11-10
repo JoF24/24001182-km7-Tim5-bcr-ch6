@@ -22,7 +22,7 @@ function EditTransmission() {
     const { id } = Route.useParams();
     const navigate = useNavigate();
 
-    const [types, setTypes] = useState("");
+    const [type, setTypes] = useState("");
     const [number_of_gears, setNumberOfGears] = useState("");
     const [isNotFound, setIsNotFound] = useState(false);
 
@@ -93,7 +93,7 @@ function EditTransmission() {
                                         type="text"
                                         placeholder="Input Transmission Types Here"
                                         required
-                                        value={types}
+                                        value={type}
                                         onChange={(event) => {
                                             setTypes(event.target.value);
                                         }}
@@ -132,7 +132,7 @@ function EditTransmission() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!types || !number_of_gears}
+                                            disabled={!type || !number_of_gears}
                                         >
                                             Save
                                         </Button>
