@@ -1,5 +1,5 @@
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
@@ -7,7 +7,6 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import { createFuel } from '../../service/fuel'
 import Protected from '../../components/Auth/Protected'
-import { toast, ToastContainer } from 'react-toastify'
 import Container from 'react-bootstrap/esm/Container'
 
 export const Route = createLazyFileRoute('/fuel/create')({
@@ -36,8 +35,9 @@ function CreateFuel() {
 
     const result = await createFuel(request)
     if (result?.success) {
-      sessionStorage.setItem('successMessage', 'Data berhasil ditambahkan!')
-      navigate({ to: '/fuels' })
+      navigate({ to: '/fuels',
+        state: { successMessage: "Data berhasil ditambahkan!" }
+       })
       return
     }
 

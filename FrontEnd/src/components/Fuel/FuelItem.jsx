@@ -29,8 +29,10 @@ const FuelItem = ({ fuel }) => {
                     onClick: async () => {
                         const result = await deleteFuel(fuel.id);
                         if (result?.success) {
-                            fetchData(); 
-                            toast.success("Data bahan bakar berhasil dihapus.");
+                            navigate({ 
+                                to: "/fuel/refresh",
+                                state: { successMessage: "Data Fuel berhasil dihapus." }
+                            });
                         } else {
                             toast.error(result?.message);
                         }
