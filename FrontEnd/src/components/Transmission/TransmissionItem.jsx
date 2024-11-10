@@ -1,39 +1,41 @@
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import PropTypes from "prop-types";
+import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
 import { deleteTransmission } from "../../service/transmission";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 import deleteIcon from "../../assets/trash.png";
 import editIcon from "../../assets/edit.png";
-import Image from "react-bootstrap/Image";
 
 const TransmissionItem = ({ transmission }) => {
     const { user } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    const [refresh, setRefresh] = useState(false);
 
     const onDelete = async (event) => {
         event.preventDefault();
 
         confirmAlert({
-            title: "Menghapus Data Transmisi",
-            message: "Setelah dihapus, data transmisi tidak dapat dikembalikan. Yakin ingin menghapus?",
+            title: "Menghapus Data Transmission",
+            message: "Setelah dihapus, data transmission tidak dapat dikembalikan. Yakin ingin menghapus?",
             buttons: [
                 {
                     label: "Ya",
                     onClick: async () => {
                         const result = await deleteTransmission(transmission.id);
                         if (result?.success) {
-                            fetchData(); 
-                            toast.success("Data transmisi berhasil dihapus.");
-                        } else {
-                            toast.error(result?.message);
+                            toast.success("Data Transmission berhasil dihapus.");
+                            navigate({ to: "transmission/refresh"});
                         }
+                        toast.error(result?.message);
                     },
                 },
                 {
@@ -45,23 +47,23 @@ const TransmissionItem = ({ transmission }) => {
     };
 
     return (
-        <Col md={3} style={{ marginRight: "2rem" }}>
+        <Col md={3} style={{ marginRight: "2rem", marginBottom: "1rem"}}>
             <Card style={{ width: "18rem" }}>
                 <Card.Body>
                     <Card.Title>{transmission?.type}</Card.Title>
-                    <Card.Text>Number of Gears: {transmission?.number_of_gears}</Card.Text>
+                    <Card.Text>{transmission?.number_of_gears} Gears</Card.Text>
 
                     {user?.role_id === 1 && (
-                        <>
-                            <Container>
-                                <Row>
-                                    <Col>
-                                        <div className="d-grid gap-2">
-                                            <Button
-                                                onClick={onDelete}
-                                                variant="outline-danger"
-                                                size="md"
-                                            >
+                            <>
+                                <Container>
+                                    <Row>
+                                        <Col>
+                                            <div className="d-grid gap-2">
+                                                <Button
+                                                    onClick={onDelete}
+                                                    variant="outline-danger"
+                                                    size="md"
+                                                >
                                                 <Image
                                                     src={deleteIcon}
                                                     alt="Delete Icon"
@@ -69,18 +71,18 @@ const TransmissionItem = ({ transmission }) => {
                                                     height={20}
                                                     className="me-2"
                                                 />
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </Col>
-                                    <Col>
-                                        <div className="d-grid gap-2">
-                                            <Button
-                                                as={Link}
-                                                href={`/transmissions/edit/${transmission?.id}`}
-                                                variant="success"
-                                                size="md"
-                                            >
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </Col>
+                                        <Col>
+                                            <div className="d-grid gap-2">
+                                                <Button
+                                                    as={Link}
+                                                    href={`/transmission/edit/${transmission?.id}`}
+                                                    variant="success"
+                                                    size="md"
+                                                >
                                                 <Image
                                                     src={editIcon}
                                                     alt="Edit Icon"
@@ -88,14 +90,14 @@ const TransmissionItem = ({ transmission }) => {
                                                     height={20}
                                                     className="me-2"
                                                 />
-                                                Edit
-                                            </Button>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Container>
-                        </>
-                    )}
+                                                    Edit
+                                                </Button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Container>                            
+                            </>
+                        )}
                 </Card.Body>
             </Card>
         </Col>
@@ -103,7 +105,7 @@ const TransmissionItem = ({ transmission }) => {
 };
 
 TransmissionItem.propTypes = {
-    transmission: PropTypes.object.isRequired,
+    transmission: PropTypes.object,
 };
 
 export default TransmissionItem;
