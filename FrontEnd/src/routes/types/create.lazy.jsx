@@ -1,101 +1,77 @@
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import { toast } from "react-toastify";
-import { getDetailManufacture, updateManufacture } from "../../../service/Manufacture";
-import Protected from "../../../components/Auth/Protected";
+import { createType } from "../../service/Types";
+import Protected from "../../components/Auth/Protected";
+import Container from "react-bootstrap/esm/Container";
 
-export const Route = createLazyFileRoute("/manufacture/edit/$id")({
+export const Route = createLazyFileRoute("/types/create")({
     component: () => (
         <Protected roles={[1]}>
-            <EditManufacture />
+            <CreateType />
         </Protected>
     ),
 });
 
-function EditManufacture() {
-    const { id } = Route.useParams();
+function CreateType() {
     const navigate = useNavigate();
 
-    const [manufacture, setManufacture] = useState("");
-    const [address, setAddress] = useState("");
-    const [isNotFound, setIsNotFound] = useState(false);
-
-    useEffect(() => {
-        const getDetailManufactureData = async (id) => {
-            const result = await getDetailManufacture(id);
-            if (result?.success) {
-                setManufacture(result.data?.manufacture);
-                setAddress(result.data?.address);
-                setIsNotFound(false);
-            } else {
-                setIsNotFound(true);
-            }
-        };
-
-        if (id) {
-            getDetailManufactureData(id);
-        }
-    }, [id]);
-
-    if (isNotFound) {
-        navigate({ to: "/" });
-        return;
-    }
+    const [type, setType] = useState("");
+    const [description, setDescription] = useState("");
 
     const onSubmit = async (event) => {
         event.preventDefault();
 
         const request = {
-            manufacture,
-            address
+            type,
+            description
         };
-        const result = await updateManufacture(id, request);
+
+        const result = await createType(request);
         if (result?.success) {
-            navigate({ to: `/`,
-                state: { successMessage: "Data Manufacture berhasil diperbarui !!" }
-            });
+            navigate({ to: "/type",
+                state: { successMessage: "Data Type berhasil ditambahkan!!" }
+             });
             return;
         }
 
-        toast.error(result?.message);
+        alert(result?.message);
     };
 
     const handleCancel = () => {
-        navigate({ to: "/" });
+        navigate({ to: "/type" });
         return;
     };
 
     return (
         <Row className="mt-5">
             <Col className="offset-md-3">
+                <div className="text-center mb-3">
+                    <h3>Add New Type</h3>
+                </div>
                 <Card>
-                    <Card.Header className="text-center">
-                        Edit Manufacture Data With ID {id}
-                    </Card.Header>
                     <Card.Body>
                         <Form onSubmit={onSubmit}>
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="manufacture"
+                                controlId="type"
                             >
                                 <Form.Label column sm={3}>
-                                    Manufacture
+                                    Type
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
                                         type="text"
-                                        placeholder="Input Manufacture Here"
+                                        placeholder="Input Type Name"
                                         required
-                                        value={manufacture}
+                                        value={type}
                                         onChange={(event) => {
-                                            setManufacture(event.target.value);
+                                            setType(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -103,19 +79,19 @@ function EditManufacture() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="address"
+                                controlId="description"
                             >
                                 <Form.Label column sm={3}>
-                                    Address
+                                    Description
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
                                         type="text"
-                                        placeholder="Input Address Here"
+                                        placeholder="Input Description"
                                         required
-                                        value={address}
+                                        value={description}
                                         onChange={(event) => {
-                                            setAddress(event.target.value);
+                                            setDescription(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -132,7 +108,7 @@ function EditManufacture() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!manufacture || !address}
+                                            disabled={!type || !description}
                                         >
                                             Save
                                         </Button>

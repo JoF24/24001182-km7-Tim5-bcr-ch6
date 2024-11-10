@@ -7,31 +7,31 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import { toast } from "react-toastify";
-import { getDetailManufacture, updateManufacture } from "../../../service/Manufacture";
+import { getDetailType, updateType } from "../../../service/Types";
 import Protected from "../../../components/Auth/Protected";
 
-export const Route = createLazyFileRoute("/manufacture/edit/$id")({
+export const Route = createLazyFileRoute('/types/edit/$id')({
     component: () => (
         <Protected roles={[1]}>
-            <EditManufacture />
+            <EditType />
         </Protected>
     ),
-});
+})
 
-function EditManufacture() {
+function EditType() {
     const { id } = Route.useParams();
     const navigate = useNavigate();
 
-    const [manufacture, setManufacture] = useState("");
-    const [address, setAddress] = useState("");
+    const [type, setType] = useState("");
+    const [description, setDescription] = useState("");
     const [isNotFound, setIsNotFound] = useState(false);
 
     useEffect(() => {
-        const getDetailManufactureData = async (id) => {
-            const result = await getDetailManufacture(id);
+        const getDetailTypeData = async (id) => {
+            const result = await getDetailType(id);
             if (result?.success) {
-                setManufacture(result.data?.manufacture);
-                setAddress(result.data?.address);
+                setType(result.data?.type);
+                setDescription(result.data?.description);
                 setIsNotFound(false);
             } else {
                 setIsNotFound(true);
@@ -39,12 +39,12 @@ function EditManufacture() {
         };
 
         if (id) {
-            getDetailManufactureData(id);
+            getDetailTypeData(id);
         }
     }, [id]);
 
     if (isNotFound) {
-        navigate({ to: "/" });
+        navigate({ to: "/type" });
         return;
     }
 
@@ -52,13 +52,13 @@ function EditManufacture() {
         event.preventDefault();
 
         const request = {
-            manufacture,
-            address
+            type,
+            description
         };
-        const result = await updateManufacture(id, request);
+        const result = await updateType(id, request);
         if (result?.success) {
-            navigate({ to: `/`,
-                state: { successMessage: "Data Manufacture berhasil diperbarui !!" }
+            navigate({ to: `/type`,
+                state: { successMessage: "Data Type berhasil diperbarui !!" }
             });
             return;
         }
@@ -67,7 +67,7 @@ function EditManufacture() {
     };
 
     const handleCancel = () => {
-        navigate({ to: "/" });
+        navigate({ to: "/type" });
         return;
     };
 
@@ -76,26 +76,26 @@ function EditManufacture() {
             <Col className="offset-md-3">
                 <Card>
                     <Card.Header className="text-center">
-                        Edit Manufacture Data With ID {id}
+                        Edit Type Data With ID {id}
                     </Card.Header>
                     <Card.Body>
                         <Form onSubmit={onSubmit}>
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="manufacture"
+                                controlId="type"
                             >
                                 <Form.Label column sm={3}>
-                                    Manufacture
+                                    Type
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
                                         type="text"
-                                        placeholder="Input Manufacture Here"
+                                        placeholder="Input Type Here"
                                         required
-                                        value={manufacture}
+                                        value={type}
                                         onChange={(event) => {
-                                            setManufacture(event.target.value);
+                                            setType(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -103,19 +103,19 @@ function EditManufacture() {
                             <Form.Group
                                 as={Row}
                                 className="mb-3"
-                                controlId="address"
+                                controlId="description"
                             >
                                 <Form.Label column sm={3}>
-                                    Address
+                                    Description
                                 </Form.Label>
                                 <Col sm="9">
                                     <Form.Control
                                         type="text"
-                                        placeholder="Input Address Here"
+                                        placeholder="Input Description Here"
                                         required
-                                        value={address}
+                                        value={description}
                                         onChange={(event) => {
-                                            setAddress(event.target.value);
+                                            setDescription(event.target.value);
                                         }}
                                     />
                                 </Col>
@@ -132,7 +132,7 @@ function EditManufacture() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!manufacture || !address}
+                                            disabled={!type || !description}
                                         >
                                             Save
                                         </Button>
