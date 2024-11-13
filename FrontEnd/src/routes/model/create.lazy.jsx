@@ -5,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { createModel } from "../../service/Model";
+import { createModel } from "../../service/model";
 import Protected from "../../components/Auth/Protected";
 import Container from "react-bootstrap/esm/Container";
 
@@ -35,7 +35,7 @@ function CreateModel() {
 
         const result = await createModel(request);
         if (result?.success) {
-            navigate({ to: "/",
+            navigate({ to: "/model",
                 state: { successMessage: "Data Model berhasil ditambahkan!!" }
              });
             return;
@@ -45,7 +45,7 @@ function CreateModel() {
     };
 
     const handleCancel = () => {
-        navigate({ to: "/" });
+        navigate({ to: "/model" });
         return;
     };
 

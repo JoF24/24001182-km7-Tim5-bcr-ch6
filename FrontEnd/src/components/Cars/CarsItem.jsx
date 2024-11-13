@@ -9,12 +9,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-import { deleteModel } from "../../service/model";
+import { deleteCars } from "../../service/Cars";
 import { toast } from "react-toastify";
 import deleteIcon from "../../assets/trash.png";
 import editIcon from "../../assets/edit.png";
 
-const ModelItem = ({ model }) => {
+const CarsItem = ({ cars }) => {
     const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
@@ -22,17 +22,17 @@ const ModelItem = ({ model }) => {
         event.preventDefault();
 
         confirmAlert({
-            title: "Menghapus Data Model",
-            message: "Setelah dihapus, data model tidak dapat dikembalikan. Yakin ingin menghapus?",
+            title: "Menghapus Data Car",
+            message: "Setelah dihapus, data car tidak dapat dikembalikan. Yakin ingin menghapus?",
             buttons: [
                 {
                     label: "Ya",
                     onClick: async () => {
-                        const result = await deleteModel(model.id);
+                        const result = await deleteCars(cars.id);
                         if (result?.success) {
                             navigate({ 
-                                to: "model/refresh",
-                                state: { successMessage: "Data Model berhasil dihapus." }
+                                to: "cars/refresh",
+                                state: { successMessage: "Data Car berhasil dihapus." }
                             });
                         }
                         toast.error(result?.message);
@@ -50,9 +50,22 @@ const ModelItem = ({ model }) => {
         <Col md={3} style={{ marginRight: "3rem", marginBottom: "2rem"}}>
             <Card style={{ width: "18rem" }}>
                 <Card.Body>
-                    <Card.Title>{model?.model}</Card.Title>
-                    <Card.Text>{type?.type}</Card.Text>
+                    <Card.Title>{cars?.cars}</Card.Title>
+                    <Card.Text>{plate?.plate}</Card.Text>
+                    <Card.Text>{manufacture_id?.manufacture_id}</Card.Text>
+                    <Card.Text>{model_id?.model_id}</Card.Text>
+                    <Card.Text>{rentPerDay?.rentPerDay}</Card.Text>
+                    <Card.Text>{capacity?.capacity}</Card.Text>
+                    <Card.Text>{description?.description}</Card.Text>
+                    <Card.Text>{availableAt?.availableAt}</Card.Text>
+                    <Card.Text>{transmission_id?.transmission_id}</Card.Text>
+                    <Card.Text>{available?.available}</Card.Text>
+                    <Card.Text>{type_id?.type_id}</Card.Text>
                     <Card.Text>{year?.year}</Card.Text>
+                    <Card.Text>{options?.options}</Card.Text>
+                    <Card.Text>{specs?.specs}</Card.Text>
+                    <Card.Text>{fuel_id?.fuel_id}</Card.Text>
+
 
                     {user?.role_id === 1 && (
                             <>
@@ -80,7 +93,7 @@ const ModelItem = ({ model }) => {
                                             <div className="d-grid gap-2">
                                                 <Button
                                                     as={Link}
-                                                    href={`/model/edit/${model?.id}`}
+                                                    href={`/cars/edit/${cars?.id}`}
                                                     variant="success"
                                                     size="md"
                                                 >
@@ -105,8 +118,8 @@ const ModelItem = ({ model }) => {
     );
 };
 
-ModelItem.propTypes = {
-    model: PropTypes.object,
+CarsItem.propTypes = {
+    cars: PropTypes.object,
 };
 
-export default ModelItem;
+export default CarsItem;
