@@ -27,12 +27,15 @@ const TypesRefreshLazyImport = createFileRoute('/types/refresh')()
 const TypesCreateLazyImport = createFileRoute('/types/create')()
 const TransmissionRefreshLazyImport = createFileRoute('/transmission/refresh')()
 const TransmissionCreateLazyImport = createFileRoute('/transmission/create')()
+const ModelRefreshLazyImport = createFileRoute('/model/refresh')()
+const ModelCreateLazyImport = createFileRoute('/model/create')()
 const ManufactureRefreshLazyImport = createFileRoute('/manufacture/refresh')()
 const ManufactureCreateLazyImport = createFileRoute('/manufacture/create')()
 const FuelRefreshLazyImport = createFileRoute('/fuel/refresh')()
 const FuelCreateLazyImport = createFileRoute('/fuel/create')()
 const TypesEditIdLazyImport = createFileRoute('/types/edit/$id')()
 const TransmissionEditIdLazyImport = createFileRoute('/transmission/edit/$id')()
+const ModelEditIdLazyImport = createFileRoute('/model/edit/$id')()
 const ManufactureEditIdLazyImport = createFileRoute('/manufacture/edit/$id')()
 const FuelEditIdLazyImport = createFileRoute('/fuel/edit/$id')()
 
@@ -108,6 +111,18 @@ const TransmissionCreateLazyRoute = TransmissionCreateLazyImport.update({
   import('./routes/transmission/create.lazy').then((d) => d.Route),
 )
 
+const ModelRefreshLazyRoute = ModelRefreshLazyImport.update({
+  id: '/model/refresh',
+  path: '/model/refresh',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/model/refresh.lazy').then((d) => d.Route))
+
+const ModelCreateLazyRoute = ModelCreateLazyImport.update({
+  id: '/model/create',
+  path: '/model/create',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/model/create.lazy').then((d) => d.Route))
+
 const ManufactureRefreshLazyRoute = ManufactureRefreshLazyImport.update({
   id: '/manufacture/refresh',
   path: '/manufacture/refresh',
@@ -150,6 +165,14 @@ const TransmissionEditIdLazyRoute = TransmissionEditIdLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() =>
   import('./routes/transmission/edit/$id.lazy').then((d) => d.Route),
+)
+
+const ModelEditIdLazyRoute = ModelEditIdLazyImport.update({
+  id: '/model/edit/$id',
+  path: '/model/edit/$id',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/model/edit/$id.lazy').then((d) => d.Route),
 )
 
 const ManufactureEditIdLazyRoute = ManufactureEditIdLazyImport.update({
@@ -247,6 +270,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManufactureRefreshLazyImport
       parentRoute: typeof rootRoute
     }
+    '/model/create': {
+      id: '/model/create'
+      path: '/model/create'
+      fullPath: '/model/create'
+      preLoaderRoute: typeof ModelCreateLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/model/refresh': {
+      id: '/model/refresh'
+      path: '/model/refresh'
+      fullPath: '/model/refresh'
+      preLoaderRoute: typeof ModelRefreshLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/transmission/create': {
       id: '/transmission/create'
       path: '/transmission/create'
@@ -289,6 +326,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ManufactureEditIdLazyImport
       parentRoute: typeof rootRoute
     }
+    '/model/edit/$id': {
+      id: '/model/edit/$id'
+      path: '/model/edit/$id'
+      fullPath: '/model/edit/$id'
+      preLoaderRoute: typeof ModelEditIdLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/transmission/edit/$id': {
       id: '/transmission/edit/$id'
       path: '/transmission/edit/$id'
@@ -320,12 +364,15 @@ export interface FileRoutesByFullPath {
   '/fuel/refresh': typeof FuelRefreshLazyRoute
   '/manufacture/create': typeof ManufactureCreateLazyRoute
   '/manufacture/refresh': typeof ManufactureRefreshLazyRoute
+  '/model/create': typeof ModelCreateLazyRoute
+  '/model/refresh': typeof ModelRefreshLazyRoute
   '/transmission/create': typeof TransmissionCreateLazyRoute
   '/transmission/refresh': typeof TransmissionRefreshLazyRoute
   '/types/create': typeof TypesCreateLazyRoute
   '/types/refresh': typeof TypesRefreshLazyRoute
   '/fuel/edit/$id': typeof FuelEditIdLazyRoute
   '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
+  '/model/edit/$id': typeof ModelEditIdLazyRoute
   '/transmission/edit/$id': typeof TransmissionEditIdLazyRoute
   '/types/edit/$id': typeof TypesEditIdLazyRoute
 }
@@ -342,12 +389,15 @@ export interface FileRoutesByTo {
   '/fuel/refresh': typeof FuelRefreshLazyRoute
   '/manufacture/create': typeof ManufactureCreateLazyRoute
   '/manufacture/refresh': typeof ManufactureRefreshLazyRoute
+  '/model/create': typeof ModelCreateLazyRoute
+  '/model/refresh': typeof ModelRefreshLazyRoute
   '/transmission/create': typeof TransmissionCreateLazyRoute
   '/transmission/refresh': typeof TransmissionRefreshLazyRoute
   '/types/create': typeof TypesCreateLazyRoute
   '/types/refresh': typeof TypesRefreshLazyRoute
   '/fuel/edit/$id': typeof FuelEditIdLazyRoute
   '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
+  '/model/edit/$id': typeof ModelEditIdLazyRoute
   '/transmission/edit/$id': typeof TransmissionEditIdLazyRoute
   '/types/edit/$id': typeof TypesEditIdLazyRoute
 }
@@ -365,12 +415,15 @@ export interface FileRoutesById {
   '/fuel/refresh': typeof FuelRefreshLazyRoute
   '/manufacture/create': typeof ManufactureCreateLazyRoute
   '/manufacture/refresh': typeof ManufactureRefreshLazyRoute
+  '/model/create': typeof ModelCreateLazyRoute
+  '/model/refresh': typeof ModelRefreshLazyRoute
   '/transmission/create': typeof TransmissionCreateLazyRoute
   '/transmission/refresh': typeof TransmissionRefreshLazyRoute
   '/types/create': typeof TypesCreateLazyRoute
   '/types/refresh': typeof TypesRefreshLazyRoute
   '/fuel/edit/$id': typeof FuelEditIdLazyRoute
   '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
+  '/model/edit/$id': typeof ModelEditIdLazyRoute
   '/transmission/edit/$id': typeof TransmissionEditIdLazyRoute
   '/types/edit/$id': typeof TypesEditIdLazyRoute
 }
@@ -389,12 +442,15 @@ export interface FileRouteTypes {
     | '/fuel/refresh'
     | '/manufacture/create'
     | '/manufacture/refresh'
+    | '/model/create'
+    | '/model/refresh'
     | '/transmission/create'
     | '/transmission/refresh'
     | '/types/create'
     | '/types/refresh'
     | '/fuel/edit/$id'
     | '/manufacture/edit/$id'
+    | '/model/edit/$id'
     | '/transmission/edit/$id'
     | '/types/edit/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -410,12 +466,15 @@ export interface FileRouteTypes {
     | '/fuel/refresh'
     | '/manufacture/create'
     | '/manufacture/refresh'
+    | '/model/create'
+    | '/model/refresh'
     | '/transmission/create'
     | '/transmission/refresh'
     | '/types/create'
     | '/types/refresh'
     | '/fuel/edit/$id'
     | '/manufacture/edit/$id'
+    | '/model/edit/$id'
     | '/transmission/edit/$id'
     | '/types/edit/$id'
   id:
@@ -431,12 +490,15 @@ export interface FileRouteTypes {
     | '/fuel/refresh'
     | '/manufacture/create'
     | '/manufacture/refresh'
+    | '/model/create'
+    | '/model/refresh'
     | '/transmission/create'
     | '/transmission/refresh'
     | '/types/create'
     | '/types/refresh'
     | '/fuel/edit/$id'
     | '/manufacture/edit/$id'
+    | '/model/edit/$id'
     | '/transmission/edit/$id'
     | '/types/edit/$id'
   fileRoutesById: FileRoutesById
@@ -454,12 +516,15 @@ export interface RootRouteChildren {
   FuelRefreshLazyRoute: typeof FuelRefreshLazyRoute
   ManufactureCreateLazyRoute: typeof ManufactureCreateLazyRoute
   ManufactureRefreshLazyRoute: typeof ManufactureRefreshLazyRoute
+  ModelCreateLazyRoute: typeof ModelCreateLazyRoute
+  ModelRefreshLazyRoute: typeof ModelRefreshLazyRoute
   TransmissionCreateLazyRoute: typeof TransmissionCreateLazyRoute
   TransmissionRefreshLazyRoute: typeof TransmissionRefreshLazyRoute
   TypesCreateLazyRoute: typeof TypesCreateLazyRoute
   TypesRefreshLazyRoute: typeof TypesRefreshLazyRoute
   FuelEditIdLazyRoute: typeof FuelEditIdLazyRoute
   ManufactureEditIdLazyRoute: typeof ManufactureEditIdLazyRoute
+  ModelEditIdLazyRoute: typeof ModelEditIdLazyRoute
   TransmissionEditIdLazyRoute: typeof TransmissionEditIdLazyRoute
   TypesEditIdLazyRoute: typeof TypesEditIdLazyRoute
 }
@@ -476,12 +541,15 @@ const rootRouteChildren: RootRouteChildren = {
   FuelRefreshLazyRoute: FuelRefreshLazyRoute,
   ManufactureCreateLazyRoute: ManufactureCreateLazyRoute,
   ManufactureRefreshLazyRoute: ManufactureRefreshLazyRoute,
+  ModelCreateLazyRoute: ModelCreateLazyRoute,
+  ModelRefreshLazyRoute: ModelRefreshLazyRoute,
   TransmissionCreateLazyRoute: TransmissionCreateLazyRoute,
   TransmissionRefreshLazyRoute: TransmissionRefreshLazyRoute,
   TypesCreateLazyRoute: TypesCreateLazyRoute,
   TypesRefreshLazyRoute: TypesRefreshLazyRoute,
   FuelEditIdLazyRoute: FuelEditIdLazyRoute,
   ManufactureEditIdLazyRoute: ManufactureEditIdLazyRoute,
+  ModelEditIdLazyRoute: ModelEditIdLazyRoute,
   TransmissionEditIdLazyRoute: TransmissionEditIdLazyRoute,
   TypesEditIdLazyRoute: TypesEditIdLazyRoute,
 }
@@ -509,12 +577,15 @@ export const routeTree = rootRoute
         "/fuel/refresh",
         "/manufacture/create",
         "/manufacture/refresh",
+        "/model/create",
+        "/model/refresh",
         "/transmission/create",
         "/transmission/refresh",
         "/types/create",
         "/types/refresh",
         "/fuel/edit/$id",
         "/manufacture/edit/$id",
+        "/model/edit/$id",
         "/transmission/edit/$id",
         "/types/edit/$id"
       ]
@@ -552,6 +623,12 @@ export const routeTree = rootRoute
     "/manufacture/refresh": {
       "filePath": "manufacture/refresh.lazy.jsx"
     },
+    "/model/create": {
+      "filePath": "model/create.lazy.jsx"
+    },
+    "/model/refresh": {
+      "filePath": "model/refresh.lazy.jsx"
+    },
     "/transmission/create": {
       "filePath": "transmission/create.lazy.jsx"
     },
@@ -569,6 +646,9 @@ export const routeTree = rootRoute
     },
     "/manufacture/edit/$id": {
       "filePath": "manufacture/edit/$id.lazy.jsx"
+    },
+    "/model/edit/$id": {
+      "filePath": "model/edit/$id.lazy.jsx"
     },
     "/transmission/edit/$id": {
       "filePath": "transmission/edit/$id.lazy.jsx"
