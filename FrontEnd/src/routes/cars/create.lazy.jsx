@@ -5,8 +5,14 @@ import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { getTransmission } from '../../service/transmission'
+import { getModel } from '../../service/model'
+import { getFuels } from '../../service/fuel'
+import { getType } from '../../service/Types'
+import { getManufacture } from '../../service/Manufacture'
 import { createCars } from '../../service/cars'
 import Protected from '../../components/Auth/Protected'
+import { toast } from "react-toastify";
 import Container from 'react-bootstrap/esm/Container'
 
 export const Route = createLazyFileRoute('/cars/create')({
@@ -22,19 +28,63 @@ function CreateCars() {
 
   const [cars, setCars] = useState('')
   const [plate, setPlate] = useState('')
-  const [manufacture_id, setManufacture_id] = useState('')
-  const [model_id, setModel_id] = useState('')
+  const [manufacture, setManufacture] = useState([])
+  const [manufacture_id, setManufacture_id] = useState(0)
+  const [model, setModel] = useState([])
+  const [model_id, setModel_id] = useState(0)
   const [rentPerDay, setRentPerDay] = useState('')
   const [capacity, setCapacity] = useState('')
   const [description, setDescription] = useState('')
   const [availableAt, setAvailableAt] = useState('')
-  const [transmission_id, setTreansmission_id] = useState('')
+  const [transmission, setTransmission] = useState([])
+  const [transmission_id, setTreansmission_id] = useState(0)
   const [available, setAvailable] = useState('')
-  const [type_id, setType_id] = useState('')
+  const [type, setType] = useState([])
+  const [type_id, setType_id] = useState(0)
   const [year, setYear] = useState('')
   const [options, setOptions] = useState('')
   const [specs, setSpecs] = useState('')
-  const [fuel_id, setFuel_id] = useState('')
+  const [fuels, setFuels] = useState([])
+  const [fuel_id, setFuel_id] = useState(0)
+
+  useEffect(() => {
+    const getManufactureData = async () => {
+        const result = await getManufacture();
+        if (result?.success) {
+            setManufacture(result?.data);
+        }
+    };
+    const getModelData = async () => {
+        const result = await getModel();
+        if (result?.success) {
+            setModel(result?.data);
+        }
+    };
+    const getTransmissionData = async () => {
+        const result = await getTransmission();
+        if (result?.success) {
+            setTransmission(result?.data);
+        }
+    };
+    const getTypeData = async () => {
+        const result = await getType();
+        if (result?.success) {
+            setType(result?.data);
+        }
+    };
+    const getFuelsData = async () => {
+        const result = await getFuels();
+        if (result?.success) {
+            setFuels(result?.data);
+        }
+    };
+
+    getManufactureData();
+    getModelData();
+    getTransmissionData();
+    getTypeData();
+    getFuelsData();
+    }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault()
@@ -117,18 +167,28 @@ function CreateCars() {
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="manufacture_id">
                 <Form.Label column sm={3}>
-                  Manufacture ID
+                  Manufacture 
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="string"
-                    placeholder="Input Manufacture Name"
-                    required
-                    value={manufacture_id}
-                    onChange={(event) => {
-                      setManufacture_id(event.target.value)
-                    }}
-                  />
+                <Form.Select
+                    aria-label="Default select example"
+                    onChange={(event) =>
+                        setManufactureId(event.target.value)
+                    }
+                >
+                    <option disabled selected>
+                        Select Manufacture
+                    </option>
+                    {manufacture.length > 0 &&
+                        manufacture.map((manufacture) => (
+                            <option
+                                key={manufacture?.id}
+                                value={manufacture?.id}
+                            >
+                                {manufacture?.name}
+                            </option>
+                        ))}
+                </Form.Select>
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="model_id">
@@ -136,15 +196,25 @@ function CreateCars() {
                   Model Name
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="string"
-                    placeholder="Input Model Name"
-                    required
-                    value={model_id}
-                    onChange={(event) => {
-                      setModel_id(event.target.value)
-                    }}
-                  />
+                <Form.Select
+                    aria-label="Default select example"
+                    onChange={(event) =>
+                        setModelId(event.target.value)
+                    }
+                >
+                    <option disabled selected>
+                        Select Model
+                    </option>
+                    {model.length > 0 &&
+                        model.map((model) => (
+                            <option
+                                key={model?.id}
+                                value={model?.id}
+                            >
+                                {model?.name}
+                            </option>
+                        ))}
+                </Form.Select>
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="rentPerDay">
@@ -213,18 +283,28 @@ function CreateCars() {
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="transmission_id">
                 <Form.Label column sm={3}>
-                  Transmission ID
+                  Transmission 
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="string"
-                    placeholder="Input Transmission Type"
-                    required
-                    value={transmission_id}
-                    onChange={(event) => {
-                      setTreansmission_id(event.target.value)
-                    }}
-                  />
+                <Form.Select
+                    aria-label="Default select example"
+                    onChange={(event) =>
+                        setTransmissionId(event.target.value)
+                    }
+                >
+                    <option disabled selected>
+                        Select Transmission
+                    </option>
+                    {transmission.length > 0 &&
+                        transmission.map((transmission) => (
+                            <option
+                                key={transmission?.id}
+                                value={transmission?.id}
+                            >
+                                {transmission?.name}
+                            </option>
+                        ))}
+                </Form.Select>
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="available">
@@ -245,18 +325,28 @@ function CreateCars() {
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="type_id">
                 <Form.Label column sm={3}>
-                  Type ID
+                  Type 
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="string"
-                    placeholder="Input Type"
-                    required
-                    value={type_id}
-                    onChange={(event) => {
-                      setType_id(event.target.value)
-                    }}
-                  />
+                <Form.Select
+                    aria-label="Default select example"
+                    onChange={(event) =>
+                        setTypeId(event.target.value)
+                    }
+                >
+                    <option disabled selected>
+                        Select Type
+                    </option>
+                    {type.length > 0 &&
+                        type.map((type) => (
+                            <option
+                                key={type?.id}
+                                value={type?.id}
+                            >
+                                {type?.name}
+                            </option>
+                        ))}
+                </Form.Select>
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="year">
@@ -312,15 +402,25 @@ function CreateCars() {
                   Fuel Type
                 </Form.Label>
                 <Col sm="9">
-                  <Form.Control
-                    type="string"
-                    placeholder="Input Fuel Type"
-                    required
-                    value={fuel_id}
-                    onChange={(event) => {
-                      setFuel_id(event.target.value)
-                    }}
-                  />
+                <Form.Select
+                    aria-label="Default select example"
+                    onChange={(event) =>
+                        setFuelsId(event.target.value)
+                    }
+                >
+                    <option disabled selected>
+                        Select Fuel
+                    </option>
+                    {fuels.length > 0 &&
+                        fuels.map((fuels) => (
+                            <option
+                                key={fuels?.id}
+                                value={fuels?.id}
+                            >
+                                {fuels?.name}
+                            </option>
+                        ))}
+                </Form.Select>
                 </Col>
               </Form.Group>
               <Container>
