@@ -50,10 +50,8 @@ const ModelItem = ({ model }) => {
         <Col md={3} style={{ marginRight: "3rem", marginBottom: "2rem"}}>
             <Card style={{ width: "18rem" }}>
                 <Card.Body>
-                    <Card.Title>{model?.model}</Card.Title>
                     <Card.Text>{type?.type}</Card.Text>
                     <Card.Text>{year?.year}</Card.Text>
-
                     {user?.role_id === 1 && (
                             <>
                                 <Container>

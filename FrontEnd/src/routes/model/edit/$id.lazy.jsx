@@ -22,7 +22,6 @@ function EditModel() {
     const { id } = Route.useParams();
     const navigate = useNavigate();
 
-    const [model, setModel] = useState("");
     const [type, setType] = useState("");
     const [year, setYear] = useState("");
     const [isNotFound, setIsNotFound] = useState(false);
@@ -31,7 +30,6 @@ function EditModel() {
         const getDetailModelData = async (id) => {
             const result = await getDetailModel(id);
             if (result?.success) {
-                setModel(result.data?.model);
                 setType(result.data?.type);
                 setYear(result.data?.year);
                 setIsNotFound(false);
@@ -54,7 +52,6 @@ function EditModel() {
         event.preventDefault();
 
         const request = {
-            model,
             type,
             year
         };
@@ -83,22 +80,6 @@ function EditModel() {
                     </Card.Header>
                     <Card.Body>
                         <Form onSubmit={onSubmit}>
-                            <Form.Group as={Row} className="mb-3" controlId="model">
-                                <Form.Label column sm={3}>
-                                    Model
-                                </Form.Label>
-                                <Col sm="9">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Input Model Name"
-                                        required
-                                        value={model}
-                                        onChange={(event) => {
-                                            setModel(event.target.value);
-                                        }}
-                                    />
-                                </Col>
-                            </Form.Group>
                             <Form.Group as={Row} className="mb-3" controlId="type">
                                 <Form.Label column sm={3}>
                                     Type
