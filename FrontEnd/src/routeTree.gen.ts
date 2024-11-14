@@ -35,14 +35,11 @@ const ManufactureRefreshLazyImport = createFileRoute('/manufacture/refresh')()
 const ManufactureCreateLazyImport = createFileRoute('/manufacture/create')()
 const FuelRefreshLazyImport = createFileRoute('/fuel/refresh')()
 const FuelCreateLazyImport = createFileRoute('/fuel/create')()
-const CarsRefreshLazyImport = createFileRoute('/cars/refresh')()
-const CarsCreateLazyImport = createFileRoute('/cars/create')()
 const TypesEditIdLazyImport = createFileRoute('/types/edit/$id')()
 const TransmissionEditIdLazyImport = createFileRoute('/transmission/edit/$id')()
 const ModelEditIdLazyImport = createFileRoute('/model/edit/$id')()
 const ManufactureEditIdLazyImport = createFileRoute('/manufacture/edit/$id')()
 const FuelEditIdLazyImport = createFileRoute('/fuel/edit/$id')()
-const CarsEditIdLazyImport = createFileRoute('/cars/edit/$id')()
 
 // Create/Update Routes
 
@@ -168,18 +165,6 @@ const FuelCreateLazyRoute = FuelCreateLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/fuel/create.lazy').then((d) => d.Route))
 
-const CarsRefreshLazyRoute = CarsRefreshLazyImport.update({
-  id: '/refresh',
-  path: '/refresh',
-  getParentRoute: () => CarsLazyRoute,
-} as any).lazy(() => import('./routes/cars/refresh.lazy').then((d) => d.Route))
-
-const CarsCreateLazyRoute = CarsCreateLazyImport.update({
-  id: '/create',
-  path: '/create',
-  getParentRoute: () => CarsLazyRoute,
-} as any).lazy(() => import('./routes/cars/create.lazy').then((d) => d.Route))
-
 const TypesEditIdLazyRoute = TypesEditIdLazyImport.update({
   id: '/types/edit/$id',
   path: '/types/edit/$id',
@@ -217,12 +202,6 @@ const FuelEditIdLazyRoute = FuelEditIdLazyImport.update({
   path: '/fuel/edit/$id',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/fuel/edit/$id.lazy').then((d) => d.Route))
-
-const CarsEditIdLazyRoute = CarsEditIdLazyImport.update({
-  id: '/edit/$id',
-  path: '/edit/$id',
-  getParentRoute: () => CarsLazyRoute,
-} as any).lazy(() => import('./routes/cars/edit/$id.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -290,20 +269,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/type'
       preLoaderRoute: typeof TypeLazyImport
       parentRoute: typeof rootRoute
-    }
-    '/cars/create': {
-      id: '/cars/create'
-      path: '/create'
-      fullPath: '/cars/create'
-      preLoaderRoute: typeof CarsCreateLazyImport
-      parentRoute: typeof CarsLazyImport
-    }
-    '/cars/refresh': {
-      id: '/cars/refresh'
-      path: '/refresh'
-      fullPath: '/cars/refresh'
-      preLoaderRoute: typeof CarsRefreshLazyImport
-      parentRoute: typeof CarsLazyImport
     }
     '/fuel/create': {
       id: '/fuel/create'
@@ -375,13 +340,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TypesRefreshLazyImport
       parentRoute: typeof rootRoute
     }
-    '/cars/edit/$id': {
-      id: '/cars/edit/$id'
-      path: '/edit/$id'
-      fullPath: '/cars/edit/$id'
-      preLoaderRoute: typeof CarsEditIdLazyImport
-      parentRoute: typeof CarsLazyImport
-    }
     '/fuel/edit/$id': {
       id: '/fuel/edit/$id'
       path: '/fuel/edit/$id'
@@ -422,22 +380,6 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface CarsLazyRouteChildren {
-  CarsCreateLazyRoute: typeof CarsCreateLazyRoute
-  CarsRefreshLazyRoute: typeof CarsRefreshLazyRoute
-  CarsEditIdLazyRoute: typeof CarsEditIdLazyRoute
-}
-
-const CarsLazyRouteChildren: CarsLazyRouteChildren = {
-  CarsCreateLazyRoute: CarsCreateLazyRoute,
-  CarsRefreshLazyRoute: CarsRefreshLazyRoute,
-  CarsEditIdLazyRoute: CarsEditIdLazyRoute,
-}
-
-const CarsLazyRouteWithChildren = CarsLazyRoute._addFileChildren(
-  CarsLazyRouteChildren,
-)
-
 interface ModelLazyRouteChildren {
   ModelCreateLazyRoute: typeof ModelCreateLazyRoute
   ModelRefreshLazyRoute: typeof ModelRefreshLazyRoute
@@ -456,7 +398,7 @@ const ModelLazyRouteWithChildren = ModelLazyRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/cars': typeof CarsLazyRouteWithChildren
+  '/cars': typeof CarsLazyRoute
   '/fuels': typeof FuelsLazyRoute
   '/login': typeof LoginLazyRoute
   '/model': typeof ModelLazyRouteWithChildren
@@ -464,8 +406,6 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterLazyRoute
   '/transmissions': typeof TransmissionsLazyRoute
   '/type': typeof TypeLazyRoute
-  '/cars/create': typeof CarsCreateLazyRoute
-  '/cars/refresh': typeof CarsRefreshLazyRoute
   '/fuel/create': typeof FuelCreateLazyRoute
   '/fuel/refresh': typeof FuelRefreshLazyRoute
   '/manufacture/create': typeof ManufactureCreateLazyRoute
@@ -476,7 +416,6 @@ export interface FileRoutesByFullPath {
   '/transmission/refresh': typeof TransmissionRefreshLazyRoute
   '/types/create': typeof TypesCreateLazyRoute
   '/types/refresh': typeof TypesRefreshLazyRoute
-  '/cars/edit/$id': typeof CarsEditIdLazyRoute
   '/fuel/edit/$id': typeof FuelEditIdLazyRoute
   '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
   '/model/edit/$id': typeof ModelEditIdLazyRoute
@@ -486,7 +425,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/cars': typeof CarsLazyRouteWithChildren
+  '/cars': typeof CarsLazyRoute
   '/fuels': typeof FuelsLazyRoute
   '/login': typeof LoginLazyRoute
   '/model': typeof ModelLazyRouteWithChildren
@@ -494,8 +433,6 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterLazyRoute
   '/transmissions': typeof TransmissionsLazyRoute
   '/type': typeof TypeLazyRoute
-  '/cars/create': typeof CarsCreateLazyRoute
-  '/cars/refresh': typeof CarsRefreshLazyRoute
   '/fuel/create': typeof FuelCreateLazyRoute
   '/fuel/refresh': typeof FuelRefreshLazyRoute
   '/manufacture/create': typeof ManufactureCreateLazyRoute
@@ -506,7 +443,6 @@ export interface FileRoutesByTo {
   '/transmission/refresh': typeof TransmissionRefreshLazyRoute
   '/types/create': typeof TypesCreateLazyRoute
   '/types/refresh': typeof TypesRefreshLazyRoute
-  '/cars/edit/$id': typeof CarsEditIdLazyRoute
   '/fuel/edit/$id': typeof FuelEditIdLazyRoute
   '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
   '/model/edit/$id': typeof ModelEditIdLazyRoute
@@ -517,7 +453,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/cars': typeof CarsLazyRouteWithChildren
+  '/cars': typeof CarsLazyRoute
   '/fuels': typeof FuelsLazyRoute
   '/login': typeof LoginLazyRoute
   '/model': typeof ModelLazyRouteWithChildren
@@ -525,8 +461,6 @@ export interface FileRoutesById {
   '/register': typeof RegisterLazyRoute
   '/transmissions': typeof TransmissionsLazyRoute
   '/type': typeof TypeLazyRoute
-  '/cars/create': typeof CarsCreateLazyRoute
-  '/cars/refresh': typeof CarsRefreshLazyRoute
   '/fuel/create': typeof FuelCreateLazyRoute
   '/fuel/refresh': typeof FuelRefreshLazyRoute
   '/manufacture/create': typeof ManufactureCreateLazyRoute
@@ -537,7 +471,6 @@ export interface FileRoutesById {
   '/transmission/refresh': typeof TransmissionRefreshLazyRoute
   '/types/create': typeof TypesCreateLazyRoute
   '/types/refresh': typeof TypesRefreshLazyRoute
-  '/cars/edit/$id': typeof CarsEditIdLazyRoute
   '/fuel/edit/$id': typeof FuelEditIdLazyRoute
   '/manufacture/edit/$id': typeof ManufactureEditIdLazyRoute
   '/model/edit/$id': typeof ModelEditIdLazyRoute
@@ -557,8 +490,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/transmissions'
     | '/type'
-    | '/cars/create'
-    | '/cars/refresh'
     | '/fuel/create'
     | '/fuel/refresh'
     | '/manufacture/create'
@@ -569,7 +500,6 @@ export interface FileRouteTypes {
     | '/transmission/refresh'
     | '/types/create'
     | '/types/refresh'
-    | '/cars/edit/$id'
     | '/fuel/edit/$id'
     | '/manufacture/edit/$id'
     | '/model/edit/$id'
@@ -586,8 +516,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/transmissions'
     | '/type'
-    | '/cars/create'
-    | '/cars/refresh'
     | '/fuel/create'
     | '/fuel/refresh'
     | '/manufacture/create'
@@ -598,7 +526,6 @@ export interface FileRouteTypes {
     | '/transmission/refresh'
     | '/types/create'
     | '/types/refresh'
-    | '/cars/edit/$id'
     | '/fuel/edit/$id'
     | '/manufacture/edit/$id'
     | '/model/edit/$id'
@@ -615,8 +542,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/transmissions'
     | '/type'
-    | '/cars/create'
-    | '/cars/refresh'
     | '/fuel/create'
     | '/fuel/refresh'
     | '/manufacture/create'
@@ -627,7 +552,6 @@ export interface FileRouteTypes {
     | '/transmission/refresh'
     | '/types/create'
     | '/types/refresh'
-    | '/cars/edit/$id'
     | '/fuel/edit/$id'
     | '/manufacture/edit/$id'
     | '/model/edit/$id'
@@ -638,7 +562,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  CarsLazyRoute: typeof CarsLazyRouteWithChildren
+  CarsLazyRoute: typeof CarsLazyRoute
   FuelsLazyRoute: typeof FuelsLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
   ModelLazyRoute: typeof ModelLazyRouteWithChildren
@@ -662,7 +586,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  CarsLazyRoute: CarsLazyRouteWithChildren,
+  CarsLazyRoute: CarsLazyRoute,
   FuelsLazyRoute: FuelsLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
   ModelLazyRoute: ModelLazyRouteWithChildren,
@@ -723,12 +647,7 @@ export const routeTree = rootRoute
       "filePath": "index.lazy.jsx"
     },
     "/cars": {
-      "filePath": "cars.lazy.jsx",
-      "children": [
-        "/cars/create",
-        "/cars/refresh",
-        "/cars/edit/$id"
-      ]
+      "filePath": "cars.lazy.jsx"
     },
     "/fuels": {
       "filePath": "fuels.lazy.jsx"
@@ -755,14 +674,6 @@ export const routeTree = rootRoute
     },
     "/type": {
       "filePath": "type.lazy.jsx"
-    },
-    "/cars/create": {
-      "filePath": "cars/create.lazy.jsx",
-      "parent": "/cars"
-    },
-    "/cars/refresh": {
-      "filePath": "cars/refresh.lazy.jsx",
-      "parent": "/cars"
     },
     "/fuel/create": {
       "filePath": "fuel/create.lazy.jsx"
@@ -795,10 +706,6 @@ export const routeTree = rootRoute
     },
     "/types/refresh": {
       "filePath": "types/refresh.lazy.jsx"
-    },
-    "/cars/edit/$id": {
-      "filePath": "cars/edit/$id.lazy.jsx",
-      "parent": "/cars"
     },
     "/fuel/edit/$id": {
       "filePath": "fuel/edit/$id.lazy.jsx"
