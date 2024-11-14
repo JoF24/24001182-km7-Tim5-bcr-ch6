@@ -35,7 +35,7 @@ function CreateModel() {
 
         const result = await createModel(request);
         if (result?.success) {
-            navigate({ to: "/model",
+            navigate({ to: "/models",
                 state: { successMessage: "Data Model berhasil ditambahkan!!" }
              });
             return;
@@ -45,7 +45,7 @@ function CreateModel() {
     };
 
     const handleCancel = () => {
-        navigate({ to: "/model" });
+        navigate({ to: "/models" });
         return;
     };
 

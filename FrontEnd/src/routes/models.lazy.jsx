@@ -9,7 +9,7 @@ import ModelItem from '../components/Model/ModelItem'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-export const Route = createLazyFileRoute('/model')({
+export const Route = createLazyFileRoute('/models')({
   component: Index,
 })
 
@@ -54,12 +54,7 @@ function Index() {
         {user?.role_id === 1 && (
           <>
             <div className="d-flex justify-content-end mb-3">
-              <Button
-                as={Link}
-                to="/manufacture/create"
-                variant="primary"
-                size="md"
-              >
+              <Button as={Link} to="/model/create" variant="primary" size="md">
                 + Tambah Data
               </Button>
             </div>
