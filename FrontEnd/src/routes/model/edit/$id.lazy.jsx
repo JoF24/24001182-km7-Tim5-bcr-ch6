@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import { toast } from "react-toastify";
-import { getDetailModel, updateModel } from "../../../service/Model";
+import { getDetailModel, updateModel } from "../../../service/model";
 import Protected from "../../../components/Auth/Protected";
 
 export const Route = createLazyFileRoute("/model/edit/$id")({
