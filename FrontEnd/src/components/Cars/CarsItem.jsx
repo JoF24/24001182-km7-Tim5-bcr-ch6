@@ -9,7 +9,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { useSelector } from "react-redux";
 import { confirmAlert } from "react-confirm-alert";
-import { deleteCars } from "../../service/Cars";
+import { deleteCars } from "../../service/car";
 import { toast } from "react-toastify";
 import deleteIcon from "../../assets/trash.png";
 import editIcon from "../../assets/edit.png";
