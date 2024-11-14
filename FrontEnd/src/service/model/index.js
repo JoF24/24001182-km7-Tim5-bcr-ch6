@@ -36,7 +36,6 @@ export const createModel = async (request) => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
-    formData.append("model", request.model);
     formData.append("type", request.type);
     formData.append("year", request.year);
 
@@ -56,7 +55,6 @@ export const updateModel = async (id, request) => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
-    formData.append("model", request.model);
     formData.append("type", request.type);
     formData.append("year", request.year);
 

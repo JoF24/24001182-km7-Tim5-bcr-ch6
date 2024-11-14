@@ -20,7 +20,6 @@ export const Route = createLazyFileRoute("/model/create")({
 function CreateModel() {
     const navigate = useNavigate();
 
-    const [model, setModel] = useState("");
     const [type, setType] = useState("");
     const [year, setYear] = useState("");
 
@@ -28,7 +27,6 @@ function CreateModel() {
         event.preventDefault();
 
         const request = {
-            model,
             type,
             year
         };
@@ -58,22 +56,6 @@ function CreateModel() {
                 <Card>
                     <Card.Body>
                         <Form onSubmit={onSubmit}>
-                            <Form.Group as={Row} className="mb-3" controlId="model">
-                                <Form.Label column sm={3}>
-                                    Model
-                                </Form.Label>
-                                <Col sm="9">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Input Model Name"
-                                        required
-                                        value={model}
-                                        onChange={(event) => {
-                                            setModel(event.target.value);
-                                        }}
-                                    />
-                                </Col>
-                            </Form.Group>
                             <Form.Group as={Row} className="mb-3" controlId="type">
                                 <Form.Label column sm={3}>
                                     Type
