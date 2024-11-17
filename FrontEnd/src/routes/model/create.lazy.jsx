@@ -104,7 +104,7 @@ function CreateModel() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!model || !type || !year}
+                                            disabled={!type || !year}
                                         >
                                             Save
                                         </Button>

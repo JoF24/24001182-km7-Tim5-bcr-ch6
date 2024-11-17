@@ -12,7 +12,6 @@ import { getType } from '../../service/Types'
 import { getManufacture } from '../../service/Manufacture'
 import { createCars } from '../../service/car'
 import Protected from '../../components/Auth/Protected'
-import { toast } from 'react-toastify'
 import Container from 'react-bootstrap/esm/Container'
 
 export const Route = createLazyFileRoute('/car/create')({
@@ -26,7 +25,6 @@ export const Route = createLazyFileRoute('/car/create')({
 function CreateCars() {
   const navigate = useNavigate()
 
-  const [cars, setCars] = useState('')
   const [plate, setPlate] = useState('')
   const [manufacture, setManufacture] = useState([])
   const [manufacture_id, setManufacture_id] = useState(0)
@@ -46,6 +44,7 @@ function CreateCars() {
   const [specs, setSpecs] = useState('')
   const [fuels, setFuels] = useState([])
   const [fuel_id, setFuel_id] = useState(0)
+  const [image, setImage] = useState(null)
 
   useEffect(() => {
     const getManufactureData = async () => {
@@ -90,7 +89,6 @@ function CreateCars() {
     event.preventDefault()
 
     const request = {
-      cars,
       plate,
       manufacture_id,
       model_id,
@@ -105,6 +103,7 @@ function CreateCars() {
       options,
       specs,
       fuel_id,
+      image,
     }
 
     const result = await createCars(request)
@@ -133,22 +132,6 @@ function CreateCars() {
         <Card>
           <Card.Body>
             <Form onSubmit={onSubmit}>
-              <Form.Group as={Row} className="mb-3" controlId="cars">
-                <Form.Label column sm={3}>
-                  Car
-                </Form.Label>
-                <Col sm="9">
-                  <Form.Control
-                    type="text"
-                    placeholder="Input Car Name"
-                    required
-                    value={cars}
-                    onChange={(event) => {
-                      setCars(event.target.value)
-                    }}
-                  />
-                </Col>
-              </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="plate">
                 <Form.Label column sm={3}>
                   Plate
@@ -296,16 +279,15 @@ function CreateCars() {
                 <Form.Label column sm={3}>
                   Available
                 </Form.Label>
-                <Col sm="9">
-                  <Form.Control
-                    type="boolean"
-                    placeholder="Input Availabillity"
-                    required
-                    value={available}
+                <Col sm="9">      
+                  <Form.Check
+                    type="radio"
+                    label="True"
+                    value="true"
                     onChange={(event) => {
                       setAvailable(event.target.value)
                     }}
-                  />
+                  />       
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="type_id">
@@ -351,7 +333,7 @@ function CreateCars() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
-                    type="string"
+                    type="array"
                     placeholder="Input Options"
                     required
                     value={options}
@@ -367,7 +349,7 @@ function CreateCars() {
                 </Form.Label>
                 <Col sm="9">
                   <Form.Control
-                    type="string"
+                    type="array"
                     placeholder="Input Specs"
                     required
                     value={specs}
@@ -398,6 +380,13 @@ function CreateCars() {
                   </Form.Select>
                 </Col>
               </Form.Group>
+              <Form.Group controlId="formFile" className="mb-3">
+                <Form.Label>Default file input example</Form.Label>
+                <Form.Control 
+                type="file"
+                onChange={(event) => setImage(event.target.files[0])} 
+                />
+              </Form.Group>
               <Container>
                 <Row>
                   <Col className="d-flex justify-content-center gap-2">
@@ -408,7 +397,6 @@ function CreateCars() {
                       type="submit"
                       variant="primary"
                       disabled={
-                        !cars ||
                         !plate ||
                         !manufacture_id ||
                         !model_id ||
@@ -422,7 +410,8 @@ function CreateCars() {
                         !year ||
                         !options ||
                         !specs ||
-                        !fuel_id
+                        !fuel_id ||
+                        !image
                       }
                     >
                       Save

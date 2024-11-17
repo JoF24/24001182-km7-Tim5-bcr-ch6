@@ -13,7 +13,7 @@ import Protected from "../../../components/Auth/Protected";
 export const Route = createLazyFileRoute("/model/edit/$id")({
     component: () => (
         <Protected roles={[1]}>
-            <EditManufacture />
+            <EditModel />
         </Protected>
     ),
 });
@@ -44,7 +44,7 @@ function EditModel() {
     }, [id]);
 
     if (isNotFound) {
-        navigate({ to: "/" });
+        navigate({ to: "/models" });
         return;
     }
 
@@ -57,7 +57,7 @@ function EditModel() {
         };
         const result = await updateModel(id, request);
         if (result?.success) {
-            navigate({ to: `/`,
+            navigate({ to: `/models`,
                 state: { successMessage: "Data Model berhasil diperbarui !!" }
             });
             return;
@@ -67,7 +67,7 @@ function EditModel() {
     };
 
     const handleCancel = () => {
-        navigate({ to: "/" });
+        navigate({ to: "/models" });
         return;
     };
 
@@ -124,7 +124,7 @@ function EditModel() {
                                         <Button 
                                             type="submit" 
                                             variant="primary" 
-                                            disabled={!model || !type || !year}
+                                            disabled={!type || !year}
                                         >
                                             Save
                                         </Button>

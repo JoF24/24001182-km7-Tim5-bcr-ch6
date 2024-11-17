@@ -31,7 +31,7 @@ const ModelItem = ({ model }) => {
                         const result = await deleteModel(model.id);
                         if (result?.success) {
                             navigate({ 
-                                to: "model/refresh",
+                                to: "/model/refresh",
                                 state: { successMessage: "Data Model berhasil dihapus." }
                             });
                         }
@@ -50,8 +50,8 @@ const ModelItem = ({ model }) => {
         <Col md={3} style={{ marginRight: "3rem", marginBottom: "2rem"}}>
             <Card style={{ width: "18rem" }}>
                 <Card.Body>
-                    <Card.Text>{type?.type}</Card.Text>
-                    <Card.Text>{year?.year}</Card.Text>
+                    <Card.Title>{model.type}</Card.Title>
+                    <Card.Text>{model.year}</Card.Text>
                     {user?.role_id === 1 && (
                             <>
                                 <Container>

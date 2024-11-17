@@ -69,7 +69,7 @@ function Index() {
           <h1>Car data is not found !</h1>
         ) : (
           cars.length > 0 &&
-          cars.map((manufacture) => (
+          cars.map((cars) => (
             <CarsItem cars={cars} key={cars?.id} />
           ))
         )}

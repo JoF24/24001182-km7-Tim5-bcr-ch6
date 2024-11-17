@@ -49,24 +49,22 @@ const CarsItem = ({ cars }) => {
     return (
         <Col md={3} style={{ marginRight: "3rem", marginBottom: "2rem"}}>
             <Card style={{ width: "18rem" }}>
+                <Card.Img variant="top" src={cars?.image} />
                 <Card.Body>
-                    <Card.Title>{cars?.cars}</Card.Title>
-                    <Card.Text>{plate?.plate}</Card.Text>
-                    <Card.Text>{manufacture_id?.manufacture_id}</Card.Text>
-                    <Card.Text>{model_id?.model_id}</Card.Text>
-                    <Card.Text>{rentPerDay?.rentPerDay}</Card.Text>
-                    <Card.Text>{capacity?.capacity}</Card.Text>
-                    <Card.Text>{description?.description}</Card.Text>
-                    <Card.Text>{availableAt?.availableAt}</Card.Text>
-                    <Card.Text>{transmission_id?.transmission_id}</Card.Text>
-                    <Card.Text>{available?.available}</Card.Text>
-                    <Card.Text>{type_id?.type_id}</Card.Text>
-                    <Card.Text>{year?.year}</Card.Text>
-                    <Card.Text>{options?.options}</Card.Text>
-                    <Card.Text>{specs?.specs}</Card.Text>
-                    <Card.Text>{fuel_id?.fuel_id}</Card.Text>
-
-
+                    <Card.Text>Plate : {cars?.plate}</Card.Text>
+                    <Card.Text>Manufacture : {cars?.Manufacture.manufacture}</Card.Text>
+                    <Card.Text>Model : {cars?.model_id}</Card.Text>
+                    <Card.Text>Rent Per Day : {cars?.rentPerDay}</Card.Text>
+                    <Card.Text>{cars?.capacity}</Card.Text>
+                    <Card.Text>{cars?.description}</Card.Text>
+                    <Card.Text>{cars?.availableAt}</Card.Text>
+                    <Card.Text>{cars?.transmission_id}</Card.Text>
+                    <Card.Text>{cars?.available}</Card.Text>
+                    <Card.Text>{cars?.type_id}</Card.Text>
+                    <Card.Text>{cars?.year}</Card.Text>
+                    <Card.Text>{cars?.options}</Card.Text>
+                    <Card.Text>{cars?.specs}</Card.Text>
+                    <Card.Text>{cars?.fuel_id}</Card.Text>
                     {user?.role_id === 1 && (
                             <>
                                 <Container>

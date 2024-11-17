@@ -39,7 +39,6 @@ export const createCars = async (request) => {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
-    formData.append("cars", request.cars);
     formData.append("plate", request.plate);
     formData.append("manufacture_id", request.manufacture_id);
     formData.append("model_id", request.model_id);
@@ -54,6 +53,7 @@ export const createCars = async (request) => {
     formData.append("options", request.options);
     formData.append("specs", request.specs);
     formData.append("fuel_id", request.fuel_id);
+    formData.append("image", request.image);
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/cars`, {
         headers: {

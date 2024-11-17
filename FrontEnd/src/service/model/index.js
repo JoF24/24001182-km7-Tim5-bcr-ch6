@@ -19,7 +19,7 @@ export const getModel = async (id) => {
 
 export const getDetailModel = async (id) => {
     const token = localStorage.getItem("token");
-    let url = `${import.meta.env.VITE_API_URL}/carsMode;/${id}`;
+    let url = `${import.meta.env.VITE_API_URL}/carsModel/${id}`;
 
     const response = await fetch(url, {
         headers: {
