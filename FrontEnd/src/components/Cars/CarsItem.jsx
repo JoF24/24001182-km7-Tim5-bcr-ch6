@@ -55,16 +55,16 @@ const CarsItem = ({ cars }) => {
                     <Card.Text>Manufacture : {cars?.Manufacture.manufacture}</Card.Text>
                     <Card.Text>Model : {cars?.model_id}</Card.Text>
                     <Card.Text>Rent Per Day : {cars?.rentPerDay}</Card.Text>
-                    <Card.Text>{cars?.capacity}</Card.Text>
-                    <Card.Text>{cars?.description}</Card.Text>
-                    <Card.Text>{cars?.availableAt}</Card.Text>
-                    <Card.Text>{cars?.transmission_id}</Card.Text>
-                    <Card.Text>{cars?.available}</Card.Text>
-                    <Card.Text>{cars?.type_id}</Card.Text>
-                    <Card.Text>{cars?.year}</Card.Text>
-                    <Card.Text>{cars?.options}</Card.Text>
-                    <Card.Text>{cars?.specs}</Card.Text>
-                    <Card.Text>{cars?.fuel_id}</Card.Text>
+                    <Card.Text>Capacity : {cars?.capacity}</Card.Text>
+                    <Card.Text>Description : {cars?.description}</Card.Text>
+                    <Card.Text>Available At : {cars?.availableAt}</Card.Text>
+                    <Card.Text>Type Transmission : {cars?.Transmission.type}</Card.Text>
+                    <Card.Text>Available : {cars?.available}</Card.Text>
+                    <Card.Text>Type : {cars?.Type.type}</Card.Text>
+                    <Card.Text>Year : {cars?.year}</Card.Text>
+                    <Card.Text>Options : {cars?.options}</Card.Text>
+                    <Card.Text>Specs : {cars?.specs}</Card.Text>
+                    <Card.Text>Fuel : {cars?.Fuel.type}</Card.Text>
                     {user?.role_id === 1 && (
                             <>
                                 <Container>
@@ -91,7 +91,7 @@ const CarsItem = ({ cars }) => {
                                             <div className="d-grid gap-2">
                                                 <Button
                                                     as={Link}
-                                                    href={`/cars/edit/${cars?.id}`}
+                                                    href={`/car/edit/${cars?.id}`}
                                                     variant="success"
                                                     size="md"
                                                 >

@@ -6,12 +6,13 @@ import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
+import Image from "react-bootstrap/Image";
 import { toast } from 'react-toastify'
-import { getTransmission } from '../../service/transmission'
-import { getModel } from '../../service/model'
-import { getFuels } from '../../service/fuel'
-import { getType } from '../../service/Types'
-import { getManufacture } from '../../service/Manufacture'
+import { getTransmissions } from '../../../service/transmission'
+import { getModel } from '../../../service/model'
+import { getFuels } from '../../../service/fuel'
+import { getType } from '../../../service/Types'
+import { getManufacture } from '../../../service/Manufacture'
 
 import { getDetailCars, updateCars } from '../../../service/car'
 import Protected from '../../../components/Auth/Protected'
@@ -28,7 +29,6 @@ function EditCars() {
   const { id } = Route.useParams()
   const navigate = useNavigate()
 
-  const [cars, setCars] = useState('')
   const [plate, setPlate] = useState('')
   const [manufacture, setManufacture] = useState([])
   const [manufacture_id, setManufacture_id] = useState(0)
@@ -39,7 +39,7 @@ function EditCars() {
   const [description, setDescription] = useState('')
   const [availableAt, setAvailableAt] = useState('')
   const [transmission, setTransmission] = useState([])
-  const [transmission_id, setTreansmission_id] = useState(0)
+  const [transmission_id, setTransmission_id] = useState(0)
   const [available, setAvailable] = useState('')
   const [type, setType] = useState([])
   const [type_id, setType_id] = useState(0)
@@ -48,6 +48,8 @@ function EditCars() {
   const [specs, setSpecs] = useState('')
   const [fuels, setFuels] = useState([])
   const [fuel_id, setFuel_id] = useState(0)
+  const [image, setImage] = useState("")
+  const [newImage, setnewImage] = useState(undefined)
   const [isNotFound, setIsNotFound] = useState(false)
 
   useEffect(() => {
@@ -63,7 +65,7 @@ function EditCars() {
         ] = await Promise.all([
           getManufacture(),
           getModel(),
-          getTransmission(),
+          getTransmissions(),
           getType(),
           getFuels(),
           id ? getDetailCars(id) : Promise.resolve(null),
@@ -77,21 +79,21 @@ function EditCars() {
 
         if (carDetailData) {
           if (carDetailData.success) {
-            setCars(carDetailData.data?.cars)
             setPlate(carDetailData.data?.plate)
-            setManufacture(carDetailData.data?.manufacture)
-            setModel(carDetailData.data?.model)
+            setManufacture_id(carDetailData.data?.manufacture_id)
+            setModel_id(carDetailData.data?.model_id)
             setRentPerDay(carDetailData.data?.rentPerDay)
             setCapacity(carDetailData.data?.capacity)
             setDescription(carDetailData.data?.description)
             setAvailableAt(carDetailData.data?.availableAt)
-            setTransmission(carDetailData.data?.transmission)
+            setTransmission_id(carDetailData.data?.transmission_id)
             setAvailable(carDetailData.data?.available)
-            setType(carDetailData.data?.type)
+            setType_id(carDetailData.data?.type_id)
             setYear(carDetailData.data?.year)
             setOptions(carDetailData.data?.options)
             setSpecs(carDetailData.data?.specs)
-            setFuel(carDetailData.data?.fuel)
+            setFuel_id(carDetailData.data?.fuel_id)
+            setImage(carDetailData.data?.image)
             setIsNotFound(false)
           } else {
             setIsNotFound(true)
@@ -115,7 +117,6 @@ function EditCars() {
     event.preventDefault()
 
     const request = {
-      cars,
       plate,
       manufacture_id,
       model_id,
@@ -130,6 +131,7 @@ function EditCars() {
       options,
       specs,
       fuel_id,
+      newImage,
     }
     const result = await updateCars(id, request)
     if (result?.success) {
@@ -144,7 +146,7 @@ function EditCars() {
   }
 
   const handleCancel = () => {
-    navigate({ to: '/' })
+    navigate({ to: '/cars' })
     return
   }
 
@@ -157,22 +159,6 @@ function EditCars() {
           </Card.Header>
           <Card.Body>
             <Form onSubmit={onSubmit}>
-              <Form.Group as={Row} className="mb-3" controlId="cars">
-                <Form.Label column sm={3}>
-                  Car
-                </Form.Label>
-                <Col sm="9">
-                  <Form.Control
-                    type="text"
-                    placeholder="Input Car Name"
-                    required
-                    value={cars}
-                    onChange={(event) => {
-                      setCars(event.target.value)
-                    }}
-                  />
-                </Col>
-              </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="plate">
                 <Form.Label column sm={3}>
                   Plate
@@ -203,8 +189,8 @@ function EditCars() {
                     </option>
                     {manufacture.length > 0 &&
                       manufacture.map((manufacture) => (
-                        <option key={manufacture?.id} value={manufacture?.id}>
-                          {manufacture?.name}
+                        <option key={manufacture?.id} value={manufacture?.id} selected={ manufacture.id == manufacture_id}>
+                          {manufacture?.manufacture}
                         </option>
                       ))}
                   </Form.Select>
@@ -224,8 +210,8 @@ function EditCars() {
                     </option>
                     {model.length > 0 &&
                       model.map((model) => (
-                        <option key={model?.id} value={model?.id}>
-                          {model?.name}
+                        <option key={model?.id} value={model?.id} selected={ model.id == model_id}>
+                          {model?.type}
                         </option>
                       ))}
                   </Form.Select>
@@ -309,8 +295,8 @@ function EditCars() {
                     </option>
                     {transmission.length > 0 &&
                       transmission.map((transmission) => (
-                        <option key={transmission?.id} value={transmission?.id}>
-                          {transmission?.name}
+                        <option key={transmission?.id} value={transmission?.id} selected={ transmission.id == transmission_id}>
+                          {transmission?.type}
                         </option>
                       ))}
                   </Form.Select>
@@ -320,16 +306,25 @@ function EditCars() {
                 <Form.Label column sm={3}>
                   Available
                 </Form.Label>
-                <Col sm="9">
-                  <Form.Control
-                    type="boolean"
-                    placeholder="Input Availabillity"
-                    required
-                    value={available}
+                <Col sm="9"> 
+                  <Form.Check
+                    type="radio"
+                    label="True"
+                    value="true"
+                    checked={available === "true"}
                     onChange={(event) => {
                       setAvailable(event.target.value)
                     }}
-                  />
+                  />  
+                  <Form.Check
+                    type="radio"
+                    label="False"
+                    value="false"
+                    checked={available === "false"}
+                    onChange={(event) => {
+                      setAvailable(event.target.value)
+                    }}
+                  />     
                 </Col>
               </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="type_id">
@@ -346,8 +341,8 @@ function EditCars() {
                     </option>
                     {type.length > 0 &&
                       type.map((type) => (
-                        <option key={type?.id} value={type?.id}>
-                          {type?.name}
+                        <option key={type?.id} value={type?.id} selected={ type.id == type_id}>
+                          {type?.type}
                         </option>
                       ))}
                   </Form.Select>
@@ -408,19 +403,55 @@ function EditCars() {
                 <Col sm="9">
                   <Form.Select
                     aria-label="Default select example"
-                    onChange={(event) => setFuelsId(event.target.value)}
+                    onChange={(event) => setFuel_id(event.target.value)}
                   >
                     <option disabled selected>
                       Select Fuel
                     </option>
                     {fuels.length > 0 &&
                       fuels.map((fuels) => (
-                        <option key={fuels?.id} value={fuels?.id}>
-                          {fuels?.name}
+                        <option key={fuels?.id} value={fuels?.id} selected={ fuels.id == fuel_id}>
+                          {fuels?.type}
                         </option>
                       ))}
                   </Form.Select>
                 </Col>
+              </Form.Group>
+              <Form.Group
+                  as={Row}
+                  className="mb-3"
+                  controlId="CarsPicture"
+              >
+                  <Form.Label column sm={3}>
+                      Cars Picture
+                  </Form.Label>
+                  <Col sm={9}>
+                      <Form.Control
+                          type="file"
+                          placeholder="Choose File"
+                          onChange={(event) => {
+                              setnewImage(
+                                  event.target.files[0]
+                              );
+                              setImage(
+                                  URL.createObjectURL(
+                                      event.target.files[0]
+                                  )
+                              );
+                          }}
+                          accept=".jpg,.png"
+                      />
+                  </Col>
+              </Form.Group>
+              <Form.Group
+                  as={Row}
+                  className="mb-3"
+                  controlId="CarsPicture"
+              >
+                  <Form.Label column sm={3}></Form.Label>
+                  <Col sm={9}>
+                      <Image src={image} fluid />
+                  </Col>
               </Form.Group>
               <Container>
                 <Row>
@@ -432,7 +463,6 @@ function EditCars() {
                       type="submit"
                       variant="primary"
                       disabled={
-                        !cars ||
                         !plate ||
                         !manufacture_id ||
                         !model_id ||

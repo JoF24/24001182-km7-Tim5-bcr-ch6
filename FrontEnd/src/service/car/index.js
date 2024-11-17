@@ -86,6 +86,7 @@ export const updateCars = async (id, request) => {
     formData.append("options", request.options);
     formData.append("specs", request.specs);
     formData.append("fuel_id", request.fuel_id);
+    formData.append("image", request.newImage);
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/cars/${id}`, {
         headers: {
